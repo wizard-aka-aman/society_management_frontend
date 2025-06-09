@@ -1,1 +1,54 @@
-<p>home works!</p>
+<div class="container right-side mt-4">
+  <h2 class="mb-3">👋 Welcome, {{ userName }}</h2>
+  <p class="text-muted">Today is {{ today | date: 'fullDate' }}</p>
+
+  <!-- Stats Cards -->
+  <div class="row mt-4">
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-danger h-100">
+        <div class="card-body">
+          <h5 class="card-title">💰 Current Dues</h5>
+          <p class="card-text fs-4">₹{{ currentDue }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-warning h-100">
+        <div class="card-body">
+          <h5 class="card-title">🛠️ Open Complaints</h5>
+          <p class="card-text fs-4">{{ complaintCount }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 mb-3">
+      <div class="card text-white bg-success h-100">
+        <div class="card-body">
+          <h5 class="card-title">📅 Upcoming Booking</h5>
+          <p class="card-text fs-6">{{ nextBooking?.amenityName || 'No Booking' }} - {{ nextBooking?.date | date }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notices -->
+  <div class="card   mt-4">
+    <div class="card-header bg-primary text-white">📰 Recent Notices</div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let notice of notices | slice:0:3">
+        <strong>{{ notice.title }}</strong> <br />
+        <small class="text-muted">{{ notice.createdAt | date:'short' }}</small>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Visitor History -->
+  <div class="card   mt-4">
+    <div class="card-header bg-secondary text-white">🚪 Recent Visitors</div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item" *ngFor="let visitor of visitors | slice:0:3">
+        <strong>{{ visitor.name }}</strong> — {{ visitor.visitReason }} <br />
+        <small class="text-muted">In: {{ visitor.inTime | date:'shortTime' }} | Out: {{ visitor.outTime || 'N/A' }}</small>
+      </li>
+    </ul>
+  </div>
+</div>

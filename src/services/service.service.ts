@@ -41,7 +41,18 @@ export class ServiceService {
     }
     return token;
   }
+  getRole() {
+    let token = localStorage.getItem('jwt');
 
+    if (token != null) {
+      const decodedToken: any = jwtDecode(token);
+      const username = decodedToken.Role;
+      // console.log(decodedToken);
+
+      return username;
+    }
+    return token;
+  }
   getEmail() {
     let token = localStorage.getItem('jwt');
 

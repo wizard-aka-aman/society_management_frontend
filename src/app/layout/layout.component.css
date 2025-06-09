@@ -1,0 +1,30 @@
+/* Sidebar Base Styles */
+.sidebar {
+  width: 280px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1040;
+}
+
+/* Show sidebar by default on large screens */
+@media (min-width: 992px) {
+  .sidebar {
+    transform: translateX(0);
+  }
+}
+ 
+
+/* Hide sidebar on small screens initially */
+@media (max-width: 991.98px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.show {
+    transform: translateX(0);
+  }
+}

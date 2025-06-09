@@ -37,6 +37,10 @@ export class LoginComponent implements OnInit {
         console.log('Login Successful', response);  
         this.toastr.success("Login Successfull" , "Success") 
         localStorage.setItem("jwt" , response.token)  
+        localStorage.setItem("email" , response.user.email)  
+        localStorage.setItem("username" , response.user.userName)  
+        localStorage.removeItem("password")   
+
         this.router.navigateByUrl('/home');
       },
       error: (error:any) => {

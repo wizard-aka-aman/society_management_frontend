@@ -1,0 +1,29 @@
+<div class="container right-side mt-4">
+  <h2 class="mb-4">🧾 My Bills</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>Month</th>
+          <th>Amount</th>
+          <th>Due Date</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let bill of bills">
+          <td>{{ bill.month | date: 'MMMM yyyy' }}</td>
+          <td>₹{{ bill.amount }}</td>
+          <td>{{ bill.dueDate | date: 'dd MMM, yyyy' }}</td>
+          <td>{{ bill.status }}</td>
+          <td>
+            <button class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
+            <button *ngIf="bill.status === 'Unpaid'" class="btn btn-success btn-sm ms-2" (click)="payNow(bill)">💳 Pay</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
