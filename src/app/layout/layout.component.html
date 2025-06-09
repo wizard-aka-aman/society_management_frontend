@@ -1,1 +1,42 @@
-<p>layout works!</p>
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm py-3">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-2 fw-bold text-primary" routerLink="home">Society</a> 
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="creategroup">Create Group</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="activity">Activity</a>
+        </li> 
+        <li class="nav-item">
+          <a class="nav-link fs-5" routerLink="personalchat">Personal-Chat</a>
+        </li>
+      </ul>
+
+      <!-- Welcome Button -->
+      <span class=" me-3" >
+        Welcome, {{userName}}!
+      </span>
+
+      <!-- Logout -->
+      <a class="  nav-link fs-5 text-danger" style="cursor: pointer;" (click)="onLogout()">
+        <i class="fa-solid fa-right-from-bracket me-1"></i> Logout
+      </a>
+    </div>
+  </div>
+</nav>
+
+ 
+
+<!-- MAIN OUTLET -->
+<router-outlet></router-outlet>

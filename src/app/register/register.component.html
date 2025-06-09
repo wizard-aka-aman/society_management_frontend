@@ -1,1 +1,68 @@
-<p>register works!</p>
+<section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+          <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body px-5 text-center">
+              
+              <div class="mb-md-5 mt-md-4 pb-5">
+                <form [formGroup]="formvalue">
+                  
+                  <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
+                  <p class="text-white-50 mb-5">Please enter your User Name , email and password!</p>
+                  
+                  <div data-mdb-input-init class="form-outline form-white mb-4">
+                    <label class="form-label" for="typeEmailX">User Name</label>
+                    <input formControlName="Username" type="text"  class="form-control form-control-lg" />
+                    @if(formvalue.controls['Username'].errors?.['required'] && formvalue.controls['Username'].touched  ){
+                      <span class="text-danger">*Required</span>
+                    }
+                    @else if (formvalue.controls['Username'].errors?.['pattern'] && formvalue.controls['Username'].touched ) {
+                      <span class="text-danger">*UserName can not contain spaces or special characters</span>
+                    }
+                        </div>
+                        <div data-mdb-input-init class="form-outline form-white mb-4">
+                          <label class="form-label" for="typeEmailX">Email</label>
+                          <input formControlName="Email" type="email" id="typeEmailX" class="form-control form-control-lg" />
+                          @if(formvalue.controls['Email'].errors?.['required'] && formvalue.controls['Email'].touched  ){
+                            <span class="text-danger">*Required</span>
+                          }
+                          @else if (formvalue.controls['Email'].errors?.['pattern'] && formvalue.controls['Email'].touched ) {
+                            <span class="text-danger">*Email is not Valid</span>
+                          }
+                        </div>
+                        
+                        <div data-mdb-input-init class="form-outline form-white mb-4">
+                          <label class="form-label" for="typePasswordX">Password</label>
+                          <input type="password" formControlName="Password" id="typePasswordX" class="form-control form-control-lg" />
+                          @if(formvalue.controls['Password'].errors?.['required'] && formvalue.controls['Password'].touched  ){
+                            <span class="text-danger">*Required</span>
+                          }
+                          @else if (formvalue.controls['Password'].errors?.['pattern'] && formvalue.controls['Password'].touched ) {
+                            <div class="text-danger">
+                              Minimum 6 characters Required <br>
+                              Must contain at least one uppercase letter  <br>
+                              one lowercase letter  <br>
+                              one digit  <br>
+                              one special character  <br>
+                            </div>
+                          } 
+                        </div>
+                        
+                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-light btn-lg px-5"  [disabled]="formvalue.invalid" (click)="sendEmail()"  >Submit</button>
+                        
+                    </form>
+  
+              </div>
+  
+              <div>
+                <p class="mb-0">Already have an account? <a  class="text-white-50 fw-bold" routerLink="/login">Login</a>
+                </p>
+              </div>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
