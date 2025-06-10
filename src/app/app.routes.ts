@@ -5,6 +5,11 @@ import { LayoutComponent } from './layout/layout.component';
 import { HomeComponent } from './home/home.component';
 import { PagenotfoundComponent } from './pagenotfound/pagenotfound.component';
 import { BillsComponent } from './bills/bills.component';
+import { ComplaintsComponent } from './complaints/complaints.component';
+import { BookingsComponent } from './bookings/bookings.component';
+import { NoticesComponent } from './notices/notices.component';
+import { VisitorsComponent } from './visitors/visitors.component';
+import { FlatsComponent } from './flats/flats.component';
 
 export const routes: Routes = [
     {
@@ -34,19 +39,23 @@ export const routes: Routes = [
             },
             {
                 path: 'complaints',
-                component: HomeComponent,
+                component: ComplaintsComponent,
             },
             {
                 path: 'bookings',
-                component: HomeComponent,
+                component: BookingsComponent,
             },
             {
                 path: 'notices',
-                component: HomeComponent,
+                component: NoticesComponent,
             },
             {
                 path: 'visitors',
-                component: HomeComponent,
+                component: VisitorsComponent,
+            },
+            {
+                path: 'flats',
+                component: FlatsComponent,
             }
 
         ]

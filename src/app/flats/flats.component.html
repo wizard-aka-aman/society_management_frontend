@@ -1,0 +1,79 @@
+<div class="container right-side mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>🙋 Manage Flats</h2>
+    <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#exampleModal" >➕ Add Flats</button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Block</th>
+          <th>FloorNumber</th>
+          <th>FlatNumber</th>
+          <th>User</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let complaint of Flats">
+          <td>{{ complaint.block }}</td>
+          @if(complaint.floorNumber ==0){
+          <td>Ground Floor</td>
+        }
+        @else {
+          <td>{{complaint.floorNumber}} Floor</td>
+          }
+          <td>{{ complaint.flatNumber }}</td>
+          @if(complaint.users !=null){
+          <td>{{ complaint.users.name}}</td>
+        }
+        @else {
+          <td>Not Allocated</td>
+          }
+          <td><button class="btn btn-sm btn-outline-primary" (click)="viewComplaint(complaint)">🔍 View</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+ 
+ 
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Flat</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <form>
+          <div class="mb-3">
+            <label for="block" class="form-label">Block</label>
+            <input type="text" class="form-control" id="block" [(ngModel)]="Block" name="block">
+          </div>
+
+          <div class="mb-3">
+            <label for="floorNumber" class="form-label">Floor Number</label>
+            <input type="number" class="form-control" id="floorNumber" [(ngModel)]="FloorNumber" name="floorNumber">
+          </div>
+
+          <div class="mb-3">
+            <label for="flatNumber" class="form-label">Flat Number</label>
+            <input type="text" class="form-control" id="flatNumber" [(ngModel)]="FlatNumber" name="flatNumber">
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="saveFlat()">Save Flat</button>
+      </div>
+
+    </div>
+  </div>
+</div>

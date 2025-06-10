@@ -1,0 +1,17 @@
+<div class="container right-side  mt-4">
+  <h2>📢 Society Notices</h2>
+  <div class="list-group mt-3">
+    <a
+       
+      class="list-group-item list-group-item-action flex-column align-items-start"
+      *ngFor="let notice of notices"
+      (click)="viewNotice(notice)"
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1">{{ notice.title }}</h5>
+        <small>{{ notice.postedAt | date: 'dd MMM, yyyy' }}</small>
+      </div>
+      <p class="mb-1 text-truncate">{{ notice.description }}</p>
+    </a>
+  </div>
+</div>

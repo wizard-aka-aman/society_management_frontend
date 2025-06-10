@@ -26,6 +26,12 @@ export class ServiceService {
   logout() {
     return this.http.get(`${this.BaseUrl}/logout`);
   } 
+  AddFlat(item:any){
+    return this.http.post(`${this.BaseUrl}/Flats/AddFlats` , item)
+  }
+  GetAllFlats(item:number){
+    return this.http.get(`${this.BaseUrl}/Flats/GetAllFlats/${item}` )
+  }
 
 
   //functions
@@ -46,10 +52,10 @@ export class ServiceService {
 
     if (token != null) {
       const decodedToken: any = jwtDecode(token);
-      const username = decodedToken.Role;
+      const role = decodedToken.Role;
       // console.log(decodedToken);
 
-      return username;
+      return role;
     }
     return token;
   }
@@ -62,6 +68,18 @@ export class ServiceService {
       // console.log(decodedToken);
 
       return Email;
+    }
+    return token;
+  }
+  getSocietyId() {
+    let token = localStorage.getItem('jwt');
+
+    if (token != null) {
+      const decodedToken: any = jwtDecode(token);
+      const Society = decodedToken.Society;
+      // console.log(decodedToken);
+
+      return Society;
     }
     return token;
   }

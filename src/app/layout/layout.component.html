@@ -17,12 +17,13 @@
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto" id="sidebarItems">
-        <li><a routerLinkActive="active" routerLink="home"  class="nav-link  active  text-white">Home</a></li>
-        <li><a routerLinkActive="active" routerLink="bills" class="nav-link  text-white">Bills</a></li>
-        <li><a routerLinkActive="active" routerLink="complaints" class="nav-link text-white">Complaints</a></li>
-        <li><a routerLinkActive="active" routerLink="bookings" class="nav-link  text-white">Bookings</a></li>
-        <li><a routerLinkActive="active" routerLink="notices" class="nav-link text-white">Notices</a></li>
-        <li><a routerLinkActive="active" routerLink="visitors" class="nav-link text-white">Visitors</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="home"  class="nav-link  active  text-white">Home</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="bills" class="nav-link  text-white">Bills</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="complaints" class="nav-link text-white">Complaints</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="bookings" class="nav-link  text-white">Bookings</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="notices" class="nav-link text-white">Notices</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="visitors" class="nav-link text-white">Visitors</a></li>
+        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="flats" class="nav-link text-white">Manage Flats</a></li>
     </ul>
     <hr>
     <div class="dropdown ">

@@ -1,0 +1,56 @@
+<div class="container right-side mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>📅 My Bookings</h2>
+    <button class="btn btn-primary" (click)="openBookingForm()">➕ Book Facility</button>
+  </div> 
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Facility</th>
+          <th>Date</th>
+          <th>Time Slot</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let booking of bookings">
+          <td>{{ booking.facility }}</td>
+          <td>{{ booking.date | date: 'dd MMM, yyyy' }}</td>
+          <td>{{ booking.timeSlot }}</td>
+          <td>{{ booking.status }}</td>
+          <td>
+            <button class="btn btn-outline-info btn-sm" (click)="viewBooking(booking)">🔍 View</button>
+            <button *ngIf="booking.status === 'Pending'" class="btn btn-outline-danger btn-sm ms-2" (click)="cancelBooking(booking)">❌ Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- <form  style="margin-left: 290px;">
+  <div class="mb-3">
+    <label class="form-label">Facility</label>
+    <select class="form-select" name="facility" required>
+      <option value="Community Hall">Community Hall</option>
+      <option value="Gym">Gym</option>
+      <option value="Guest Room">Guest Room</option>
+      <option value="Party Lawn">Party Lawn</option>
+    </select>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Date</label>
+    <input type="date" class="form-control"  name="date" required>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">From Time Slot</label>
+    <input type="time" class="form-control"   name="timeSlot" placeholder="e.g., 6:00 PM - 9:00 PM" required>
+    <label class="form-label">To  Slot</label>
+    <input type="time" class="form-control"   name="timeSlot" placeholder="e.g., 6:00 PM - 9:00 PM" required>
+  </div>
+
+  <button class="btn btn-success" type="submit">Submit Booking</button>
+</form> -->
