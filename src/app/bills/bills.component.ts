@@ -1,5 +1,7 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
+import { ServiceService } from '../../services/service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-bills',
@@ -9,6 +11,7 @@ import { Component } from '@angular/core';
 })
 export class BillsComponent {
 
+  role :string= ""
   bills = [
     {
       month: new Date('2025-05-01'),
@@ -25,6 +28,9 @@ export class BillsComponent {
       billId: 'BILL202504',
     },
   ];
+  constructor(private ServiceSrv: ServiceService, private toastr: ToastrService){
+    this.role = this.ServiceSrv.getRole();
+  }
 
   ngOnInit() {
     // Replace with service call

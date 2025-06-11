@@ -1,17 +1,18 @@
-import { Component } from '@angular/core'; 
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ServiceService } from '../../services/service.service';
 import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-register',
-  imports: [RouterLink ,ReactiveFormsModule ,CommonModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  selector: 'app-register-admin',
+  imports: [CommonModule,FormsModule,ReactiveFormsModule],
+  templateUrl: './register-admin.component.html',
+  styleUrl: './register-admin.component.css'
 })
-export class RegisterComponent {
+export class RegisterAdminComponent {
+
   formvalue : FormGroup = new FormGroup({
     Username : new FormControl('', [Validators.required, Validators.pattern("^[a-zA-Z0-9]+$")]),
     Email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
@@ -35,7 +36,7 @@ export class RegisterComponent {
     localStorage.setItem("email" , this.formData.Email)  
         this.fromEmail = this.formvalue.value ;
           
-        this.ServiceSrv.register(this.fromEmail).subscribe({
+        this.ServiceSrv.registerAdmin(this.fromEmail).subscribe({
           next: (response:any) => {
             this.toastr.success("Register Successfully","Success"); 
             localStorage.setItem("username" , this.formData.username)

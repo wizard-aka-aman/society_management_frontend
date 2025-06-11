@@ -23,7 +23,10 @@
         <li><a routerLinkActive="active" (click)="SideBar()" routerLink="bookings" class="nav-link  text-white">Bookings</a></li>
         <li><a routerLinkActive="active" (click)="SideBar()" routerLink="notices" class="nav-link text-white">Notices</a></li>
         <li><a routerLinkActive="active" (click)="SideBar()" routerLink="visitors" class="nav-link text-white">Visitors</a></li>
-        <li><a routerLinkActive="active" (click)="SideBar()" routerLink="flats" class="nav-link text-white">Manage Flats</a></li>
+        <li *ngIf="Role=='Admin'" ><a routerLinkActive="active" (click)="SideBar()" routerLink="flats" class="nav-link text-white">Manage Flats</a></li>
+        <li *ngIf="Role=='Admin'" ><a routerLinkActive="active" (click)="SideBar()" routerLink="register" class="nav-link text-white">Add User </a></li>
+        <li *ngIf="Role=='Admin'" ><a routerLinkActive="active" (click)="SideBar()" routerLink="manage-users" class="nav-link text-white">Manage Users </a></li>
+        <li *ngIf="Role=='Admin'" ><a routerLinkActive="active" (click)="SideBar()" routerLink="registerAdmin" class="nav-link text-white">Add Admin </a></li>
     </ul>
     <hr>
     <div class="dropdown ">

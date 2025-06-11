@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core'; 
+import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -13,8 +13,8 @@ export class ServiceService {
   }
 
   //  public BaseUrl :string= 'https://wizardaman.bsite.net';
-   public BaseUrl :string= 'https://localhost:7019';
-   
+  public BaseUrl: string = 'https://localhost:7019';
+
   //api's
 
   login(item: any) {
@@ -25,12 +25,45 @@ export class ServiceService {
   }
   logout() {
     return this.http.get(`${this.BaseUrl}/logout`);
-  } 
-  AddFlat(item:any){
-    return this.http.post(`${this.BaseUrl}/Flats/AddFlats` , item)
   }
-  GetAllFlats(item:number){
-    return this.http.get(`${this.BaseUrl}/Flats/GetAllFlats/${item}` )
+  AddFlat(item: any) {
+    return this.http.post(`${this.BaseUrl}/Flats/AddFlats`, item)
+  }
+  GetAllFlats(item: number) {
+    return this.http.get(`${this.BaseUrl}/Flats/GetAllFlats/${item}`)
+  }
+  GetMyComplaints(name: string) {
+    return this.http.get(`${this.BaseUrl}/Complaints/GetMyComplaints/${name}`)
+  }
+  GetAllComplaints(id: number) {
+    return this.http.get(`${this.BaseUrl}/Complaints/GetAllComplaints/${id}`)
+  }
+  AddComplaints(item: any) {
+    return this.http.post(`${this.BaseUrl}/Complaints/AddComplaints`, item)
+  }
+
+  UpdateComplaints(item: any, id: number) {
+    return this.http.put(`${this.BaseUrl}/Complaints/UpdateComplaints/${id}`, item)
+  }
+  Getallusers(id: number) {
+    return this.http.get(`${this.BaseUrl}/getallusers/${id}`)
+  }
+  UpdateFlats(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Flats/UpdateFlats/` + id, item);
+  }
+  DeleteFlat(id: number) {
+    return this.http.delete(`${this.BaseUrl}/Flats/DeleteFlats/` + id);
+  }
+
+  Getallunassignedusers(id: number) {
+    return this.http.get(`${this.BaseUrl}/getallunassignedusers/${id}`)
+  }
+  DeleteUser(name: string) {
+    return this.http.delete(`${this.BaseUrl}/DeleteUser/` + name);
+  }
+  
+  registerAdmin(item: any) {
+    return this.http.post(`${this.BaseUrl}/registerAdmin`, item);
   }
 
 
