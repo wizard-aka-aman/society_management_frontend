@@ -22,16 +22,23 @@ export class ComplaintsComponent {
   showDescription: string = ""
   showStatus: string = ""
   showCreatedWhen: any;
-  Role :string = ""
-  editFormData : any = {} 
-  complaintsId :number = 0;
-  Society :number = 0;
+  Role: string = ""
+  editFormData: any = {}
+  complaintsId: number = 0;
+  Society: number = 0;
+  showFlatNumber: number = 0;
+  showFloorNumber: number = 0;
+  showBlock: string = "";
+  showName: string = "";
+  showRole: string = "";
+  showEmail: string = "";
+  showDateResolved :string = ""
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
     this.Name = this.ServiceSrv.getUserName();
-    this.Role = this.ServiceSrv.getRole(); 
-    this.Society = this.ServiceSrv.getSocietyId(); 
+    this.Role = this.ServiceSrv.getRole();
+    this.Society = this.ServiceSrv.getSocietyId();
     console.log(this.Role);
-    
+
     this.FetchComplaints();
   }
   viewComplaint(complaint: any) {
@@ -43,13 +50,36 @@ export class ComplaintsComponent {
     this.showCreatedWhen = complaint.dateCreated
     this.showStatus = complaint.status;
     this.complaintsId = complaint.complaintsId
+    this.showFlatNumber = complaint.flats?.flatNumber ?? "Not Assigned";
+    this.showFloorNumber = complaint.flats?.floorNumber ?? "Not Assigned";
+    this.showBlock = complaint.flats?.block ?? "Not Assigned"; 
+    
+    this.showName = complaint.flats.users?.name ?? "Not Assigned";
+    this.showRole = complaint.flats.users?.role ?? "Not Assigned";
+    this.showEmail = complaint.flats.users?.email ?? "Not Assigned";
+    this.showDateResolved = complaint.dateResolved ?? "Not Completed";
   }
 
-  resetComplaintForm() {
+  DeleteComplaint(id :number) {
+    var confirm1 = confirm("Sure you want to Delete");
+   if(confirm1){
+     this.ServiceSrv.DeleteComplaints(id).subscribe({
+      next: (res) =>{
+        console.log(res);
+        this.toastr.success('Complaint deleted successfully');
+        this.FetchComplaints();
 
+      },
+      error: (err) =>{
+        console.log(err);
+        this.toastr.error('Error deleting complaint');
+        
+      }
+    })
+   }
   }
   submitComplaint() {
-    if(this.Title == "" || this.Description == ""){
+    if (this.Title == "" || this.Description == "") {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
     }
@@ -57,63 +87,63 @@ export class ComplaintsComponent {
     this.formdata.Description = this.Description;
     this.formdata.Status = this.Status;
     this.formdata.Name = this.Name;
-    
+
     console.log(this.formdata);
-    
+
     this.ServiceSrv.AddComplaints(this.formdata).subscribe({
-      next: (response) =>{
+      next: (response) => {
         console.log(response);
         this.toastr.success("Complaint Added", "Success")
         this.FetchComplaints();
       },
-      error: (error) =>{
+      error: (error) => {
         console.log(error);
       }
-    }) 
+    })
   }
 
-  FetchComplaints(){
-    if(this.Role == 'Admin'){
+  FetchComplaints() {
+    if (this.Role == 'Admin') {
       this.ServiceSrv.GetAllComplaints(this.Society).subscribe({
-      next: (response) =>{
-        console.log(response);
-        this.complaints = response
-      },
-      error: (error) =>{
-        console.log(error);
-      }
-    })
+        next: (response) => {
+          console.log(response);
+          this.complaints = response
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
     }
-    else{
+    else {
       this.ServiceSrv.GetMyComplaints(this.Name).subscribe({
-      next: (response) =>{
-        console.log(response);
-        this.complaints = response
-      },
-      error: (error) =>{
-        console.log(error);
-      }
-    })
+        next: (response) => {
+          console.log(response);
+          this.complaints = response
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
     }
   }
-  Close(){
+  Close() {
     this.editModalVisible = false
   }
-  Save(){
+  Save() {
     this.editFormData.Title = this.showTitle;
     this.editFormData.Description = this.showDescription;
     this.editFormData.Status = this.showStatus;
     this.editFormData.Name = this.Name;
     console.log(this.editFormData);
-    this.ServiceSrv.UpdateComplaints(this.editFormData , this.complaintsId).subscribe({
-      next: (response) =>{
+    this.ServiceSrv.UpdateComplaints(this.editFormData, this.complaintsId).subscribe({
+      next: (response) => {
         console.log(response);
-         this.toastr.success("Complaint Updated", "Success")
-         this.FetchComplaints();
-          this.editModalVisible = false
+        this.toastr.success("Complaint Updated", "Success")
+        this.FetchComplaints();
+        this.editModalVisible = false
       },
-      error: (error) =>{
-         this.editModalVisible = false
+      error: (error) => {
+        this.editModalVisible = false
         console.log(error);
       }
     })

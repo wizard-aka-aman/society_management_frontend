@@ -42,7 +42,7 @@ export class RegisterAdminComponent {
             localStorage.setItem("username" , this.formData.username)
             localStorage.setItem("password" , this.formData.password)
            
-            // this.router.navigateByUrl('/login');
+           this.router.navigateByUrl('/home');
           },
           error:(err:any)=>{ 
             console.log(err.error);

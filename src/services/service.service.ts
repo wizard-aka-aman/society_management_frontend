@@ -45,6 +45,9 @@ export class ServiceService {
   UpdateComplaints(item: any, id: number) {
     return this.http.put(`${this.BaseUrl}/Complaints/UpdateComplaints/${id}`, item)
   }
+  DeleteComplaints(id :number){
+    return this.http.delete(`${this.BaseUrl}/Complaints/DeleteComplaints/${id}`)
+  }
   Getallusers(id: number) {
     return this.http.get(`${this.BaseUrl}/getallusers/${id}`)
   }
@@ -65,6 +68,33 @@ export class ServiceService {
   registerAdmin(item: any) {
     return this.http.post(`${this.BaseUrl}/registerAdmin`, item);
   }
+  AddBills(item:any){
+    return this.http.post(`${this.BaseUrl}/Bills/addbills`,item);
+  }
+  GetAllBills(id :number){
+    return this.http.get(`${this.BaseUrl}/Bills/GetAllBills/${id}`);
+  }
+  GetMyBills(name :string){
+    return this.http.get(`${this.BaseUrl}/Bills/GetMyBills/${name}`);
+  }
+  GetAllNotices(id :number){
+    return this.http.get(`${this.BaseUrl}/Notices/GetAllNotices/${id}`);
+  }
+  AddNotices(item:any){
+    return this.http.post(`${this.BaseUrl}/Notices/AddNotices` , item);
+  }
+  UpdateNotices(id:number ,item:any){
+    return this.http.put(`${this.BaseUrl}/Notices/UpdateNotices/${id}` , item);
+  }
+  DeleteNotices(id:number){
+    return this.http.delete(`${this.BaseUrl}/Notices/DeleteNotices/${id}`);
+  }
+
+  
+
+  
+  
+
 
 
   //functions

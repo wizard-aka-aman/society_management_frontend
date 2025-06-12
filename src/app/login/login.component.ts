@@ -6,7 +6,7 @@ import {   ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
-  imports: [RouterLink,ReactiveFormsModule , CommonModule],
+  imports: [ReactiveFormsModule , CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

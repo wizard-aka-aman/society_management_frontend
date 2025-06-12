@@ -1,5 +1,6 @@
 import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core'; 
+import { ServiceService } from '../../services/service.service';
 
 @Component({
   selector: 'app-home',
@@ -8,7 +9,7 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-userName = 'Aman';
+userName :string = "";
   today = new Date();
 
   currentDue = 1200;
@@ -27,6 +28,10 @@ userName = 'Aman';
     { name: 'Rahul Sharma', visitReason: 'Friend', inTime: new Date(), outTime: null },
     { name: 'Flipkart Delivery', visitReason: 'Package', inTime: new Date(), outTime: new Date() },
   ];
+
+  constructor(private ServiceSrv : ServiceService ){
+    this.userName = this.ServiceSrv.getUserName();
+  }
 
   ngOnInit() {
     // fetch real data using service

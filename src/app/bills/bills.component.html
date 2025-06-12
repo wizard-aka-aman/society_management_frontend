@@ -1,34 +1,91 @@
 <div class="container right-side mt-4">
-@if(role =="Admin"){
-  <h2 class="mb-4">🧾 Generate Bills</h2>
-}
-@else {
-  <h2 class="mb-4">🧾 My Bills</h2>
-}
+ <div class="d-flex justify-content-between align-items-center mb-3">
+    @if(role=='Admin'){
+      <h2>🧾 Generate Bills</h2>
+      <button  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">➕ Add Bills</button>
+    }
+    @else {
+      <h2>🧾 My Bills</h2>
+    }
+  </div>
 
   <div class="table-responsive">
     <table class="table table-bordered table-striped align-middle">
       <thead class="table-dark">
         <tr>
-          <th>Month</th>
+          @if(role=="Admin"){
+            <th>Flat Number</th> 
+          }
+          <th>Type</th>
           <th>Amount</th>
           <th>Due Date</th>
-          <th>Status</th>
+          <th>Generate Date</th>
+          <th>Paid Date</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let bill of bills">
-          <td>{{ bill.month | date: 'MMMM yyyy' }}</td>
-          <td>₹{{ bill.amount }}</td>
-          <td>{{ bill.dueDate | date: 'dd MMM, yyyy' }}</td>
-          <td>{{ bill.status }}</td>
+          @if(role=="Admin"){
+            <td>{{ bill.flats.flatNumber }}</td>
+          }
+          <td>{{ bill.type }}</td>
+          <td>₹{{ bill.amount  }}</td>
+          <td>{{ bill.dueDate | date }}</td>
+          <td>{{ bill.generatedDate | date : "medium"}}</td>
+          @if(bill.paidDate != null){
+            <td>{{ bill.paidDate }}</td> 
+          }
+          @else {
+            <td>Not Paid</td> 
+          }
           <td>
-            <button class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
-            <button *ngIf="bill.status === 'Unpaid'" class="btn btn-success btn-sm ms-2" (click)="payNow(bill)">💳 Pay</button>
+           @if(role!="Admin"){
+             <button *ngIf="bill.paidDate != null" class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
+            <button *ngIf="bill.paidDate == null" class="btn btn-success btn-sm ms-2" (click)="payNow(bill)">💳 Pay</button>
+           }
+           @else {
+            <button *ngIf="bill.paidDate != null" class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
+           }
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Bill</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- New form fields for Title and Description -->
+        <div class="mb-3">
+          <label for="flatNumber" class="form-label">Flat Number</label>
+          <input type="number" class="form-control" id="flatNumber" [(ngModel)]="flatNumber"  placeholder="Enter flat Number">
+        </div>
+        <div class="mb-3">
+          <label for="Type" class="form-label">Type</label>
+          <input type="text" class="form-control" id="Type"  [(ngModel)]="type"  placeholder="Type"> 
+        </div>
+        <div class="mb-3">
+          <label for="Amount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="Amount"  [(ngModel)]="amount"   placeholder="Enter Amount"> 
+        </div>
+        <div class="mb-3">
+          <label for="complaintDescription" class="form-label">Due Date</label>
+          <input type="date" class="form-control" id="complaintDescription" [(ngModel)]="dueDate"  placeholder="Enter Date"> 
+        </div>  
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  >Close</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="AddBill()">Submit </button>
+      </div>
+    </div>
   </div>
 </div>

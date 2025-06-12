@@ -2,34 +2,34 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
 import { ToastrService } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-bills',
-  imports: [DatePipe , CommonModule],
+  imports: [DatePipe, CommonModule, FormsModule],
   templateUrl: './bills.component.html',
   styleUrl: './bills.component.css'
 })
 export class BillsComponent {
 
-  role :string= ""
-  bills = [
-    {
-      month: new Date('2025-05-01'),
-      amount: 1200,
-      dueDate: new Date('2025-06-10'),
-      status: 'Paid',
-      billId: 'BILL202505',
-    },
-    {
-      month: new Date('2025-04-01'),
-      amount: 1200,
-      dueDate: new Date('2025-05-10'),
-      status: 'Unpaid',
-      billId: 'BILL202504',
-    },
-  ];
-  constructor(private ServiceSrv: ServiceService, private toastr: ToastrService){
+  role: string = ""
+  bills: any;
+  flatNumber: number = 0
+  type: string = "";
+  amount: number = 0;
+  dueDate: any;
+  formData: any = {};
+  name: string = ""
+  societyId: number = 0 
+  constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
     this.role = this.ServiceSrv.getRole();
+    this.name = this.ServiceSrv.getUserName();
+    this.societyId = this.ServiceSrv.getSocietyId();
+    if (this.role == "Admin") {
+      this.fetchBills();
+    } else {
+      this.fetchMyBills();
+    }
   }
 
   ngOnInit() {
@@ -45,5 +45,55 @@ export class BillsComponent {
   payNow(bill: any) {
     // Redirect to payment gateway or show payment modal
     console.log('Paying', bill.billId);
+  }
+  AddBill() {
+    if (this.flatNumber < 1 || this.type == "" || this.amount < 1) {
+      this.toastr.error('Please fill all the correctly fields', "error");
+      return;
+    }
+    this.formData.FlatNumber = this.flatNumber;
+    this.formData.Type = this.type;
+    this.formData.Amount = this.amount;
+    this.formData.DueDate = this.dueDate;
+    this.formData.Name = this.name;
+    console.log(this.formData);
+    this.ServiceSrv.AddBills(this.formData).subscribe({
+      next: (res) => {
+        console.log(res);
+
+        this.toastr.success('Bill Added Successfully', "success");
+        this.fetchBills();
+
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+
+  }
+  fetchBills() {
+    this.ServiceSrv.GetAllBills(this.societyId).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.bills = res
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
+  }
+  fetchMyBills() {
+    console.log(this.name);
+    
+    this.ServiceSrv.GetMyBills(this.name).subscribe({
+      next: (res) => {
+        console.log("my bills");
+        console.log(res);
+        this.bills = res
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    })
   }
 }

@@ -1,11 +1,16 @@
 <div class="container right-side mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     @if(Role=='Admin'){
-      <h2>🙋 All Complaints</h2>
-    }
-    @else {
-      <h2>🙋 My Complaints</h2>
-      <button  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">➕ Add Complaint</button>
+    <h2>🙋 All Complaints</h2>
+    } @else {
+    <h2>🙋 My Complaints</h2>
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      ➕ Add Complaint
+    </button>
     }
   </div>
 
@@ -22,9 +27,29 @@
       <tbody>
         <tr *ngFor="let complaint of complaints">
           <td>{{ complaint.title }}</td>
-          <td>{{ complaint.status }} </td>
-          <td>{{ complaint.dateCreated | date: 'dd MMM, yyyy' }}</td>
-          <td><button class="btn btn-sm btn-outline-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal"  (click)="viewComplaint(complaint)">🔍 View</button></td>
+          <td>{{ complaint.status }}</td>
+          <td>{{ complaint.dateCreated | date : "dd MMM, yyyy" }}</td>
+          <td>
+            <button
+              class="btn btn-sm btn-outline-primary"
+              data-bs-target="#exampleModalToggle"
+              data-bs-toggle="modal"
+              (click)="viewComplaint(complaint)"
+            >
+              🔍 View
+            </button>
+
+            @if(Role != "Admin"){
+            <button
+              class="btn btn-sm btn-outline-primary"
+              data-bs-target="#exampleModalToggle"
+              data-bs-toggle="modal"
+              (click)="DeleteComplaint(complaint.complaintsId)"
+            >
+              ❌ Delete
+            </button>
+            }
+          </td>
         </tr>
       </tbody>
     </table>
@@ -32,34 +57,69 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Complaint</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          Add New Complaint
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <!-- New form fields for Title and Description -->
         <div class="mb-3">
           <label for="complaintTitle" class="form-label">Title</label>
-          <input type="text" class="form-control" id="complaintTitle" [(ngModel)]=" Title" placeholder="Enter complaint title">
+          <input
+            type="text"
+            class="form-control"
+            id="complaintTitle"
+            [(ngModel)]="Title"
+            placeholder="Enter complaint title"
+          />
         </div>
         <div class="mb-3">
-          <label for="complaintDescription" class="form-label">Description</label>
-          <textarea class="form-control" id="complaintDescription" [(ngModel)]=" Description" rows="3" placeholder="Describe your complaint"></textarea>
+          <label for="complaintDescription" class="form-label"
+            >Description</label
+          >
+          <textarea
+            class="form-control"
+            id="complaintDescription"
+            [(ngModel)]="Description"
+            rows="3"
+            placeholder="Describe your complaint"
+          ></textarea>
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  >Close</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="submitComplaint()">Submit Complaint</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="submitComplaint()"
+        >
+          Submit Complaint
+        </button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Edit modal-->
- 
 <div
   class="modal fade show d-block"
   *ngIf="editModalVisible"
@@ -67,48 +127,119 @@
   style="background: rgba(0, 0, 0, 0.7); z-index: 1055"
 >
   <div class="modal-dialog modal-dialog-centered modal-lg">
-    <div class="modal-content text-center border-0 shadow-lg rounded-4">
-      <div class="modal-header bg-gradient-success text-white rounded-top-4">
-        <h5
-          class="modal-title text-dark w-100 d-flex align-items-center justify-content-center"
-        >
-           View Complaint !
-          
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-success text-white py-3">
+        <h5 class="modal-title w-100 text-center m-0">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          View Complaint
         </h5>
       </div>
-      <div class="modal-body px-5 py-4">
-         <div class="mb-3">
-          <label for="complaintTitle" class="form-label"><b>Title</b></label>
-          <input type="text" [disabled]="true" class="form-control" id="complaintTitle" [(ngModel)]="showTitle" placeholder="Enter complaint title">
-        </div>
-        <div class="mb-3">
-          <label for="complaintDescription" class="form-label"><b>Description</b></label>
-          <textarea class="form-control" [disabled]="true" id="complaintDescription" [(ngModel)]=" showDescription" rows="3" placeholder="Describe your complaint"></textarea>
-        </div>
-        <div class="mb-3">
-          <label for="complaintDescription" class="form-label"><b>Created When : </b></label>
-          {{showCreatedWhen | date : 'medium' }}
+      <div class="modal-body px-md-5 px-3 py-4">
+        <!-- Complaint Info -->
+        <div class="row mb-4">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Title</label>
+            <input
+              type="text"
+              [disabled]="true"
+              class="form-control"
+              [(ngModel)]="showTitle"
+              placeholder="Enter complaint title"
+            />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Created On</label>
+            <input
+              type="text"
+              class="form-control"
+              [disabled]="true"
+              [value]="showCreatedWhen | date : 'medium'"
+            />
+          </div>
         </div>
 
-        <div class="mb-3" >
-          <label for="complaintDescription" class="form-label"><b>Status : </b></label>
-          <select [(ngModel)]="showStatus"  [disabled]="Role!='Admin'">
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Completed">Completed</option>
-          </select> 
+        <div class="mb-4">
+          <label class="form-label fw-bold">Description</label>
+          <textarea
+            class="form-control"
+            [disabled]="true"
+            rows="3"
+            [(ngModel)]="showDescription"
+            placeholder="Describe your complaint"
+          ></textarea>
         </div>
+
+        <div class="row mb-4">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Status</label>
+            <select
+              class="form-select"
+              [(ngModel)]="showStatus"
+              [disabled]="Role !== 'Admin'"
+            >
+              <option value="Pending">Pending</option>
+              <option value="In Progress">In Progress</option>
+              <option value="Completed">Completed</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Resolved Date</label>
+            <input
+              *ngIf="showDateResolved != null"
+              type="text"
+              class="form-control"
+              [disabled]="true"
+              [value]="showDateResolved | date : 'medium'"
+            />
+            <input
+              *ngIf="showDateResolved == null"
+              type="text"
+              class="form-control"
+              [disabled]="true"
+              [value]="showDateResolved"
+            />
+          </div>
+        </div>
+
+        @if(Role=="Admin"){
+        <hr class="my-4" />
+
+        <!-- Flat Details -->
+        <div class="mb-4">
+          <h6 class="fw-bold text-success mb-3">Flat Details</h6>
+          <div class="row">
+            <div class="col-md-4 col-6"><b>Block:</b> {{ showBlock }}</div>
+            <div class="col-md-4 col-6">
+              <b>Flat No:</b> {{ showFlatNumber }}
+            </div>
+            <div class="col-md-4 col-6">
+              <b>Floor:</b> {{ showFloorNumber }}
+            </div>
+          </div>
+        </div>
+
+        <!-- User Details -->
+        <div>
+          <h6 class="fw-bold text-success mb-3">User Details</h6>
+          <div class="row">
+            <div class="col-md-4 col-6"><b>Name:</b> {{ showName }}</div>
+            <div class="col-md-4 col-6"><b>Email:</b> {{ showEmail }}</div>
+            <div class="col-md-4 col-6"><b>Role:</b> {{ showRole }}</div>
+          </div>
+        </div>
+        }
       </div>
-      <div class="modal-footer justify-content-center border-0">
-        <button
-          class="btn btn-outline-success px-4 fw-semibold"
-          (click)="Close()">
+
+      <!-- Footer -->
+      <div class="modal-footer justify-content-center border-top-0 pb-4">
+        <button class="btn btn-outline-secondary px-4 me-2" (click)="Close()">
           Close
         </button>
-        <button 
-        *ngIf="Role=='Admin'"
-          class="btn btn-outline-success px-4 fw-semibold"
-          (click)="Save()">
+        <button
+          *ngIf="Role == 'Admin'"
+          class="btn btn-success px-4"
+          (click)="Save()"
+        >
           Save
         </button>
       </div>

@@ -10,48 +10,49 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './manage-users.component.css'
 })
 export class ManageUsersComponent {
-  users : any;
-  societyId : number=0;
-  name :string = ""
- constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
-    this.societyId =   this.ServiceSrv.getSocietyId(); 
-   this.GetAllUsers();
-   this.name = this.ServiceSrv.getUserName();
+  users: any;
+  societyId: number = 0;
+  name: string = ""
+  constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
+    this.societyId = this.ServiceSrv.getSocietyId();
+    this.GetAllUsers();
+    this.name = this.ServiceSrv.getUserName();
   }
-  GetAllUsers(){
-     this.ServiceSrv.Getallusers(this.societyId).subscribe({
-      next: (data) =>{
+  GetAllUsers() {
+    this.ServiceSrv.Getallusers(this.societyId).subscribe({
+      next: (data) => {
         this.users = data;
         console.log(data);
-        
+
       },
-      error: (err) =>{
+      error: (err) => {
         console.log(err);
       }
     })
   }
 
-   Delete(name:string){
-     const isconfirm = confirm("You Sure Want to Delete?");
-     console.log(name);
-     
-    if(isconfirm){
+  Delete(name: string) {
+    const isconfirm = confirm("You Sure Want to Delete?");
+    console.log(name);
+
+    if (isconfirm) {
       this.ServiceSrv.DeleteUser(name).subscribe({
-      next: (res: any) =>{
-        console.log(res);
-        if(res){
-          this.toastr.success("User deleted Successfully", "Success"); 
+        next: (res: any) => {
+          console.log(res);
+          if (res) {
+            this.toastr.success("User deleted Successfully", "Success");
+          }
+          else {
+            this.toastr.error(name + " having Flat or remove from Flat first", "Error");
+          }
+          this.GetAllUsers()
+        },
+        error: (err: any) => {
+          this.toastr.error(" Some Error Occured", "Error");
+          this.GetAllUsers()
+          // console.log(err);
         }
-        else{
-          this.toastr.error(name+" having Flat or remove from Flat first", "Error");
-        }
-        this.GetAllUsers()
-      },
-      error: (err: any) =>{
-         
-        console.log(err);
-      }
-    })
+      })
     }
   }
 }

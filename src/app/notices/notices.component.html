@@ -1,5 +1,16 @@
 <div class="container right-side  mt-4">
-  <h2>📢 Society Notices</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>📢 Society Notices</h2>
+    @if(role=='Admin'){ 
+      
+    <button
+      class="btn btn-primary" 
+      data-bs-toggle="modal" data-bs-target="#inputModal" 
+    >
+      ➕ Add Notice
+    </button>
+    }  
+  </div>
   <div class="list-group mt-3">
     <a
        
@@ -8,10 +19,123 @@
       (click)="viewNotice(notice)"
     >
       <div class="d-flex w-100 justify-content-between">
-        <h5 class="mb-1">{{ notice.title }}</h5>
-        <small>{{ notice.postedAt | date: 'dd MMM, yyyy' }}</small>
+        <h5 class="mb-1"><b>Title : </b> {{ notice.title }}</h5> <br>
+        <small><b>Created At : </b>{{ notice.createdAt | date: 'dd MMM, yyyy' }}</small>
       </div>
-      <p class="mb-1 text-truncate">{{ notice.description }}</p>
+      <p class="mb-1 text-truncate"> <b>Description : </b>{{ notice.description }}</p>
     </a>
+    @if(notices.length == 0){
+      <h3 class="text-center">No notices found</h3>
+    }
   </div>
 </div>
+<div
+  class="modal fade show d-block"
+  *ngIf="ModalVisible"
+  tabindex="-1"
+  style="background: rgba(0, 0, 0, 0.7); z-index: 1055"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-success text-white py-3">
+        <h5 class="modal-title w-100 text-center m-0">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          View Notice
+        </h5>
+      </div>
+
+      <div class="modal-body px-md-5 px-3 py-4"> 
+        <div class="mb-4"> 
+          <p><strong>Title:</strong> {{ showTitle }}</p>
+          <p><strong>Description:</strong> {{ showdescription }}</p>
+          <p><strong>Created At:</strong> {{ showcreatedAt | date: 'medium' }}</p> 
+        </div>
+      </div> 
+
+      <div class="modal-footer justify-content-center border-top-0 pb-4">
+        <button class="btn btn-outline-secondary px-4 me-2" (click)="Close()">
+          Close
+        </button> 
+        <button *ngIf="role== 'Admin'" class="btn btn-outline-secondary px-4 me-2" (click)="Delete()">
+          Delete
+        </button> 
+        <button *ngIf="role== 'Admin'" class="btn btn-outline-secondary px-4 me-2" (click)="Edit()">
+          Edit
+        </button> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade show d-block"
+  *ngIf="isEditAble"
+  tabindex="-1"
+  style="background: rgba(0, 0, 0, 0.7); z-index: 1055"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-success text-white py-3">
+        <h5 class="modal-title w-100 text-center m-0">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          Edit Notice
+        </h5>
+      </div>
+
+      <div class="modal-body px-md-5 px-3 py-4"> 
+        <div class="mb-4"> 
+          <p><strong>Title:</strong> 
+          <input type="text" [(ngModel)]="showTitle" >
+        </p>
+          <p><strong>Description:</strong>
+          <input type="text" [(ngModel)]="showdescription" >
+          </p> 
+        </div>
+      </div> 
+
+      <div class="modal-footer justify-content-center border-top-0 pb-4">
+        <button class="btn btn-outline-secondary px-4 me-2" (click)="CloseEdit()">
+          Close
+        </button>  
+        <button *ngIf="role== 'Admin'" class="btn btn-outline-secondary px-4 me-2" (click)="SaveEdit()">
+          Save Edit
+        </button> 
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+
+<!-- Modal -->
+<div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="inputModalLabel">Enter Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="titleInput" class="form-label">Title</label>
+            <input type="text" id="titleInput" class="form-control" [(ngModel)]="title" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label for="descInput" class="form-label">Description</label>
+            <textarea id="descInput" class="form-control" [(ngModel)]="description" name="description" required></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="SendNotice()">Save</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
