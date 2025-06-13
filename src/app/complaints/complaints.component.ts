@@ -33,6 +33,7 @@ export class ComplaintsComponent {
   showRole: string = "";
   showEmail: string = "";
   showDateResolved :string = ""
+  showFeedBack :string = ""
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
     this.Name = this.ServiceSrv.getUserName();
     this.Role = this.ServiceSrv.getRole();
@@ -53,11 +54,13 @@ export class ComplaintsComponent {
     this.showFlatNumber = complaint.flats?.flatNumber ?? "Not Assigned";
     this.showFloorNumber = complaint.flats?.floorNumber ?? "Not Assigned";
     this.showBlock = complaint.flats?.block ?? "Not Assigned"; 
-    
+    this.showFeedBack = complaint?.feedBack;
     this.showName = complaint.flats.users?.name ?? "Not Assigned";
     this.showRole = complaint.flats.users?.role ?? "Not Assigned";
     this.showEmail = complaint.flats.users?.email ?? "Not Assigned";
-    this.showDateResolved = complaint.dateResolved ?? "Not Completed";
+    this.showDateResolved = complaint?.dateResolved ;
+    console.log(this.showDateResolved);
+    
   }
 
   DeleteComplaint(id :number) {
@@ -95,6 +98,8 @@ export class ComplaintsComponent {
         console.log(response);
         this.toastr.success("Complaint Added", "Success")
         this.FetchComplaints();
+        this.Title = ""
+        this.Description = ""
       },
       error: (error) => {
         console.log(error);
@@ -134,6 +139,7 @@ export class ComplaintsComponent {
     this.editFormData.Description = this.showDescription;
     this.editFormData.Status = this.showStatus;
     this.editFormData.Name = this.Name;
+    this.editFormData.FeedBack = this.showFeedBack;
     console.log(this.editFormData);
     this.ServiceSrv.UpdateComplaints(this.editFormData, this.complaintsId).subscribe({
       next: (response) => {

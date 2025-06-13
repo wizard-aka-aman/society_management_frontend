@@ -1,25 +1,113 @@
 <div class="container right-side mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2>👥 My Visitors</h2>
-     
+    @if(role=='Admin'){
+
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#inputModal"
+    >
+      ➕ Add Visitor
+    </button>
+    }
   </div>
 
   <div class="table-responsive">
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
-          <th>Name</th> 
+          <th>Name</th>
           <th>Visit Date</th>
-          <th>Time</th>
-          <th>Purpose</th> 
-          <th>Status</th> 
+          <th>Purpose</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let visitor of visitors">
-          
+          <td>
+            {{ visitor.name }}
+          </td>
+          <td>
+            {{ visitor.visitDateTime | date:  "medium" }}
+          </td>
+          <td>
+            {{ visitor.purpose }}
+          </td>
+          <td>
+            <button *ngIf="role== 'Admin'" class="btn btn-outline-secondary px-4 me-2" (click)="Delete(visitor.visitorsId)">
+          Delete
+        </button> 
+          </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="inputModal"
+  tabindex="-1"
+  aria-labelledby="inputModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inputModalLabel">Enter Details</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="titleInput" class="form-label">Name</label>
+            <input
+              type="text"
+              id="titleInput"
+              class="form-control"
+              [(ngModel)]="username"
+              name="title"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="descInput" class="form-label">Purpose</label>
+            <textarea
+              id="descInput"
+              class="form-control"
+              [(ngModel)]="purpose"
+              name="description"
+              required
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            (click)="sendVisitor()"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   </div>
 </div>

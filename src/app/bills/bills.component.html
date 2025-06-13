@@ -40,6 +40,8 @@
             <td>Not Paid</td> 
           }
           <td>
+             <button class="btn btn-outline-info btn-sm me-2"  data-bs-toggle="modal" data-bs-target="#bookingModalview" (click)="viewBooking(bill)">🔍 View</button>
+             
            @if(role!="Admin"){
              <button *ngIf="bill.paidDate != null" class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
             <button *ngIf="bill.paidDate == null" class="btn btn-success btn-sm ms-2" (click)="payNow(bill)">💳 Pay</button>
@@ -65,9 +67,16 @@
       </div>
       <div class="modal-body">
         <!-- New form fields for Title and Description -->
+        
         <div class="mb-3">
-          <label for="flatNumber" class="form-label">Flat Number</label>
-          <input type="number" class="form-control" id="flatNumber" [(ngModel)]="flatNumber"  placeholder="Enter flat Number">
+          <label for="Type" class="form-label">Flat Number</label>
+          <select name="name" [(ngModel)]="name" id="">
+            <option *ngFor="let name of getAllFlats" [value]="name.users.name">
+              
+                {{ name.flatNumber }}
+               
+            </option>
+          </select>
         </div>
         <div class="mb-3">
           <label for="Type" class="form-label">Type</label>
@@ -85,6 +94,83 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  >Close</button>
         <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="AddBill()">Submit </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="bookingModalview" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content shadow-lg">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="bookingModalLabel">Bill Details</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        <div  >
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <strong>Name:</strong> {{ selectedBill?.flats.users.name }}
+            </div>
+            <div class="col-md-6">
+              <strong>Email:</strong> {{ selectedBill?.flats.users.email }}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <strong>Flat Number:</strong> {{ selectedBill?.flats.flatNumber }}
+            </div>
+            <div class="col-md-6">
+              <strong>Block:</strong> {{ selectedBill?.flats.block }}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <strong>Amount:</strong> ₹{{ selectedBill?.amount }}
+            </div>
+            <div class="col-md-6">
+             <div >
+               <strong>Paid Status:</strong>
+              <span class="badge bg-warning text-dark">{{ selectedBill?.isPaid }}</span>
+             </div>
+ 
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            @if(selectedBill?.paidDate == null){
+              <div class="col-md-6">
+              <strong>Paid Date:</strong> Not Paid
+            </div>
+            }
+            @else {
+              <div class="col-md-6">
+              <strong>Paid Date:</strong> {{ selectedBill?.paidDate | date:'medium' }}
+            </div>
+            }
+            <div class="col-md-6">
+              <strong>Type:</strong> {{ selectedBill?.type }}
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <strong>Created At:</strong> {{ selectedBill?.generatedDate | date:'medium' }}
+            </div>
+            <div class="col-md-6"  >
+              <strong>Due Date:</strong> {{ selectedBill?.dueDate | date:'medium' }}
+            </div>
+          </div>
+ 
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <!-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" (click)="Edit()" >Save</button> -->
       </div>
     </div>
   </div>

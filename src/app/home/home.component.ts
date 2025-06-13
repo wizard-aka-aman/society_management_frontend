@@ -1,39 +1,86 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core'; 
+import { Component } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
 
 @Component({
   selector: 'app-home',
-  imports: [DatePipe,CommonModule],
+  imports: [DatePipe, CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-userName :string = "";
-  today = new Date();
+  userName: string = "";
+  totalDues: number = 0;
+  complaintCount: number = 0;
+  notices: any;
+  visitors: any; 
+  billsdata: any[] = [];
+  role : string = ""
+  societyId : number = 0; 
+  
 
-  currentDue = 1200;
-  complaintCount = 2;
-  nextBooking = {
-    amenityName: 'Clubhouse',
-    date: new Date('2025-06-07T17:00:00'),
-  };
 
-  notices = [
-    { title: 'Water supply off on June 7', createdAt: new Date() },
-    { title: 'Society Meeting at 5 PM', createdAt: new Date('2025-06-05') },
-  ];
-
-  visitors = [
-    { name: 'Rahul Sharma', visitReason: 'Friend', inTime: new Date(), outTime: null },
-    { name: 'Flipkart Delivery', visitReason: 'Package', inTime: new Date(), outTime: new Date() },
-  ];
-
-  constructor(private ServiceSrv : ServiceService ){
+  constructor(private ServiceSrv: ServiceService) {
     this.userName = this.ServiceSrv.getUserName();
+    this.role = this.ServiceSrv.getRole();
+    this.societyId = this.ServiceSrv.getSocietyId();
+    
+
+    this.ServiceSrv.GetMyBills(this.userName).subscribe({
+
+      next: (data: any) => {
+        this.billsdata = data;
+        console.log(data);   
+        this.totalDues = this.billsdata.map((e: any) => { this.totalDues += e.amount;  return this.totalDues})[this.billsdata.length-1];
+        console.log(this.totalDues);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+   if(this.role == "Admin"){
+     this.ServiceSrv.TotalComplaints(this.societyId).subscribe({
+      next: (data: any) =>{
+        this.complaintCount = data;
+      },
+      error: (error) =>{
+        console.error(error);
+      }
+    })
+   }
+   else{
+    this.ServiceSrv.MyComplaintsNumber(this.userName).subscribe({
+      next: (data: any) =>{
+        this.complaintCount = data;
+      },
+      error: (error) =>{
+        console.error(error);
+      }
+    })
+   }
+
+   this.ServiceSrv.GetOneNotice(this.societyId).subscribe({
+    next: (data: any) =>{
+      this.notices = data;
+      console.log(data);
+   },
+    error: (error) =>{
+      console.error(error);
+    }
+   })
+
+   this.ServiceSrv.GetOneVisitors(this.societyId).subscribe({
+    next: (data: any) =>{
+      this.visitors = data;
+      console.log(data);
+   },
+    error: (error) =>{
+      console.error(error);
+    }
+   })
+   console.log(this.userName);
+   
+  
   }
 
-  ngOnInit() {
-    // fetch real data using service
-  }
 }

@@ -1,15 +1,25 @@
 <div class="container right-side mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
+    @if(role!="Admin"){
     <h2>📅 My Bookings</h2>
-    <button class="btn btn-primary" (click)="openBookingForm()">➕ Book Facility</button>
-  </div> 
+    } @else {
+    <h2>📅 All Bookings</h2>
+    }
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#bookingModal"
+    >
+      ➕ Book Facility
+    </button>
+  </div>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead class="table-dark">
         <tr>
           <th>Facility</th>
-          <th>Date</th>
-          <th>Time Slot</th>
+          <th>From Time</th>
+          <th>To Time</th>
           <th>Status</th>
           <th>Action</th>
         </tr>
@@ -17,40 +27,242 @@
       <tbody>
         <tr *ngFor="let booking of bookings">
           <td>{{ booking.facility }}</td>
-          <td>{{ booking.date | date: 'dd MMM, yyyy' }}</td>
-          <td>{{ booking.timeSlot }}</td>
+          <td>{{ booking.startTime | date : "medium" }}</td>
+          <td>{{ booking.endTime | date : "medium" }}</td>
           <td>{{ booking.status }}</td>
           <td>
-            <button class="btn btn-outline-info btn-sm" (click)="viewBooking(booking)">🔍 View</button>
-            <button *ngIf="booking.status === 'Pending'" class="btn btn-outline-danger btn-sm ms-2" (click)="cancelBooking(booking)">❌ Cancel</button>
+            <button
+              class="btn btn-outline-info btn-sm me-2"
+              data-bs-toggle="modal"
+              data-bs-target="#bookingModalview"
+              (click)="viewBooking(booking)"
+            >
+              🔍 View
+            </button>
+            <button
+            *ngIf="booking.flats.users.name == name"
+              class="btn btn-outline-danger btn-sm"
+              (click)="cancelBooking(booking)"
+            >
+              ❌ Cancel
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-<!-- <form  style="margin-left: 290px;">
-  <div class="mb-3">
-    <label class="form-label">Facility</label>
-    <select class="form-select" name="facility" required>
-      <option value="Community Hall">Community Hall</option>
-      <option value="Gym">Gym</option>
-      <option value="Guest Room">Guest Room</option>
-      <option value="Party Lawn">Party Lawn</option>
-    </select>
-  </div>
 
-  <div class="mb-3">
-    <label class="form-label">Date</label>
-    <input type="date" class="form-control"  name="date" required>
-  </div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="bookingModal"
+  tabindex="-1"
+  aria-labelledby="bookingModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form [formGroup]="bookingForm">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookingModalLabel">Booking Form</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
 
-  <div class="mb-3">
-    <label class="form-label">From Time Slot</label>
-    <input type="time" class="form-control"   name="timeSlot" placeholder="e.g., 6:00 PM - 9:00 PM" required>
-    <label class="form-label">To  Slot</label>
-    <input type="time" class="form-control"   name="timeSlot" placeholder="e.g., 6:00 PM - 9:00 PM" required>
-  </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label>Facility</label>
+            <input
+              type="text"
+              formControlName="facility"
+              class="form-control"
+            />
+          </div>
 
-  <button class="btn btn-success" type="submit">Submit Booking</button>
-</form> -->
+          <div class="mb-3">
+            <label>Start Time</label>
+            <input
+              type="datetime-local"
+              [min]="todayDate"
+              formControlName="startTime"
+              class="form-control"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label>End Time</label>
+            <input
+              type="datetime-local"
+              formControlName="endTime"
+              class="form-control"
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            data-bs-dismiss="modal"
+            (click)="SendBooking()"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Booking Details Modal --><div
+  class="modal fade"
+  id="bookingModalview"
+  tabindex="-1"
+  aria-labelledby="bookingModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content shadow-lg rounded-4">
+      <!-- Modal Header -->
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="bookingModalLabel">Booking Details</h5>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body px-4 py-3">
+        <div class="container-fluid">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <strong>Name:</strong>
+              <div>{{ selectedBooking?.flats.users.name }}</div>
+            </div>
+            <div class="col-md-6">
+              <strong>Email:</strong>
+              <div>{{ selectedBooking?.flats.users.email }}</div>
+            </div>
+
+            <div class="col-md-6">
+              <strong>Flat Number:</strong>
+              <div>{{ selectedBooking?.flats.flatNumber }}</div>
+            </div>
+            <div class="col-md-6">
+              <strong>Block:</strong>
+              <div>{{ selectedBooking?.flats.block }}</div>
+            </div>
+
+            <div class="col-md-6">
+              <strong>Facility:</strong>
+              <div>{{ selectedBooking?.facility }}</div>
+            </div>
+
+            <div class="col-md-6">
+              <div  >
+                <strong>Status:</strong>
+                <span class="badge bg-warning text-dark">
+                  {{ selectedBooking?.status }}
+                </span>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <strong>Start Time:</strong>
+              <div>{{ selectedBooking?.startTime | date: "medium" }}</div>
+            </div>
+            <div class="col-md-6">
+              <strong>End Time:</strong>
+              <div>{{ selectedBooking?.endTime | date: "medium" }}</div>
+            </div>
+
+            <div class="col-md-6">
+              <strong>Created At:</strong>
+              <div>{{ selectedBooking?.createdAt | date: "medium" }}</div>
+            </div>
+           
+            @if(selectedBooking?.status == "Rejected"){
+               <div class="col-md-6" >
+              <strong>Rejected Date:</strong>
+              <div>{{ selectedBooking?.approvalDate | date: "medium" }}</div>
+            </div>
+            
+            <div class="col-md-6">
+              <strong>Rejected By:</strong>
+              <div>{{ selectedBooking?.approvedBy || 'N/A' }}</div>
+            </div>
+          }
+            @else {
+              <div class="col-md-6">
+              <strong>Approved By:</strong>
+              <div>{{ selectedBooking?.approvedBy || 'N/A' }}</div>
+            </div>
+             <div class="col-md-6" *ngIf="selectedBooking?.approvalDate">
+              <strong>Approved Date:</strong>
+              <div>{{ selectedBooking?.approvalDate | date: "medium" }}</div>
+            </div>
+            }
+
+            <div class="col-md-6" *ngIf="role === 'Admin'">
+              <strong>Status:</strong>
+              <select
+                [(ngModel)]="status"
+                class="form-select mt-1"
+              >
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </div>
+
+            <div class="col-12" *ngIf="status === 'Rejected'">
+              <strong>Reason:</strong>
+              <textarea
+                name="reason"
+                [disabled]="role !== 'Admin'"
+                [(ngModel)]="reason"
+                placeholder="Enter the reason"
+                class="form-control mt-1"
+                rows="3"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer px-4 py-2">
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          *ngIf="role === 'Admin'"
+          data-bs-dismiss="modal"
+          (click)="Edit()"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

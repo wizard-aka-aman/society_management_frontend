@@ -26,6 +26,9 @@ export class ServiceService {
   logout() {
     return this.http.get(`${this.BaseUrl}/logout`);
   }
+  GetUserDetail(name:string){
+    return this.http.get(`${this.BaseUrl}/GetUserDetail/${name}`);
+  }
   AddFlat(item: any) {
     return this.http.post(`${this.BaseUrl}/Flats/AddFlats`, item)
   }
@@ -48,6 +51,14 @@ export class ServiceService {
   DeleteComplaints(id :number){
     return this.http.delete(`${this.BaseUrl}/Complaints/DeleteComplaints/${id}`)
   }
+  TotalComplaints(id :number){
+    return this.http.get(`${this.BaseUrl}/Complaints/TotalComplaints/${id}`)
+  }
+  
+  MyComplaintsNumber(name :string){
+    return this.http.get(`${this.BaseUrl}/Complaints/MyComplaintsNumber/${name}`);
+  }
+
   Getallusers(id: number) {
     return this.http.get(`${this.BaseUrl}/getallusers/${id}`)
   }
@@ -80,6 +91,9 @@ export class ServiceService {
   GetAllNotices(id :number){
     return this.http.get(`${this.BaseUrl}/Notices/GetAllNotices/${id}`);
   }
+  GetOneNotice(id :number){
+    return this.http.get(`${this.BaseUrl}/Notices/GetOneNotice/${id}`);
+  }
   AddNotices(item:any){
     return this.http.post(`${this.BaseUrl}/Notices/AddNotices` , item);
   }
@@ -88,6 +102,37 @@ export class ServiceService {
   }
   DeleteNotices(id:number){
     return this.http.delete(`${this.BaseUrl}/Notices/DeleteNotices/${id}`);
+  }
+
+  AddBooking(item:any){
+    return this.http.post(`${this.BaseUrl}/Bookings/AddBookings`,item);
+  }
+  GetAllBooking(id :number){
+    return this.http.get(`${this.BaseUrl}/Bookings/GetAllBookings/${id}`);
+  }
+  GetMyBooking(name:string){
+    return this.http.get(`${this.BaseUrl}/Bookings/GetMyBookings/${name}`);
+  }
+  UpdateBooking(id:number,item:any){
+    return this.http.put(`${this.BaseUrl}/Bookings/UpdateBookings/${id}/`,item)
+  }
+  DeleteBooking(id:number){
+    return this.http.delete(`${this.BaseUrl}/Bookings/DeleteBookings/${id}`);
+  }
+  GetAllVisitors(id:number){
+    return this.http.get(`${this.BaseUrl}/Visitors/GetAllVisitors/${id}`);
+  }
+  GetOneVisitors(id:number){
+    return this.http.get(`${this.BaseUrl}/Visitors/GetOneVisitors/${id}`);
+  }
+  UpdateVisitor(id :number , item:any){
+    return this.http.put(`${this.BaseUrl}/Visitors/UpdateVisitors/${id}`,item);
+  }
+  DeleteVisitor(id :number){
+    return this.http.delete(`${this.BaseUrl}/Visitors/DeleteVisitors/${id}`);
+  }
+  AddVisitors(item:any){
+    return this.http.post(`${this.BaseUrl}/Visitors/AddVisitors`,item);
   }
 
   

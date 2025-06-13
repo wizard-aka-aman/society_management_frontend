@@ -2,8 +2,9 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     @if(Role=='Admin'){
     <h2>🙋 All Complaints</h2>
-    } @else {
+    } @else{
     <h2>🙋 My Complaints</h2>
+    }
     <button
       class="btn btn-primary"
       data-bs-toggle="modal"
@@ -11,7 +12,7 @@
     >
       ➕ Add Complaint
     </button>
-    }
+    <!-- } -->
   </div>
 
   <div class="table-responsive">
@@ -39,7 +40,6 @@
               🔍 View
             </button>
 
-            @if(Role != "Admin"){
             <button
               class="btn btn-sm btn-outline-primary"
               data-bs-target="#exampleModalToggle"
@@ -48,7 +48,6 @@
             >
               ❌ Delete
             </button>
-            }
           </td>
         </tr>
       </tbody>
@@ -163,7 +162,6 @@
           <textarea
             class="form-control"
             [disabled]="true"
-            rows="3"
             [(ngModel)]="showDescription"
             placeholder="Describe your complaint"
           ></textarea>
@@ -196,9 +194,21 @@
               type="text"
               class="form-control"
               [disabled]="true"
-              [value]="showDateResolved"
+              value="Not Completed"
             />
           </div>
+        </div>
+        <div *ngIf="showStatus == 'Completed'" class="mb-4">
+          @if(showFeedBack != null || showName == Name){
+          <label class="form-label fw-bold"> FeedBack</label>
+          <textarea
+            class="form-control"
+            rows="3"
+            [disabled]="!(showName == Name)"
+            [(ngModel)]="showFeedBack"
+            placeholder="Enter your feedback"
+          ></textarea>
+          }
         </div>
 
         @if(Role=="Admin"){
@@ -236,7 +246,7 @@
           Close
         </button>
         <button
-          *ngIf="Role == 'Admin'"
+          *ngIf="Role == 'Admin' || showStatus == 'Completed'"
           class="btn btn-success px-4"
           (click)="Save()"
         >
@@ -246,3 +256,4 @@
     </div>
   </div>
 </div>
+
