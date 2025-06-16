@@ -55,6 +55,7 @@ export class BookingsComponent {
     this.formData = this.bookingForm.value;
     this.formData.Name = this.name; 
     this.formData.status = "Pending"
+    this.bookingForm.value.facility = this.bookingForm.value.facility.trim();
     console.log(this.bookingForm.value); 
     if(this.bookingForm.value.facility == "" || this.bookingForm.value.endTime =="" || this.bookingForm.value.startTime ==""){
       this.toastr.error('Please fill all the fields', 'Error');
@@ -137,6 +138,13 @@ export class BookingsComponent {
     }
   }
   Edit(){ 
+    if(this.reason != null || this.reason != undefined){
+      this.reason = this.reason.trim();
+    }
+    if(this.reason == "" || this.reason == null){
+      this.toastr.error("Please Enter Reason", "error");
+      return ;
+    }
     this.editFormData.Name = this.name;
     this.editFormData.endTime = this.selectedBooking.endTime;
     this.editFormData.facility = this.selectedBooking.facility;

@@ -82,6 +82,8 @@ export class ComplaintsComponent {
    }
   }
   submitComplaint() {
+    this.Title = this.Title.trim();
+   this.Description = this.Description.trim();
     if (this.Title == "" || this.Description == "") {
       this.toastr.error('Please fill in all fields', 'Error');
       return;
@@ -135,6 +137,13 @@ export class ComplaintsComponent {
     this.editModalVisible = false
   }
   Save() {
+    this.showTitle = this.showTitle.trim();
+    this.showDescription = this.showDescription.trim();
+    this.showFeedBack = this.showFeedBack.trim();
+    if(this.showFeedBack == "" ||this.showTitle == "" || this.showDescription == "") {
+      this.toastr.error("Please fill all fields", "Error")
+      return ;
+    }
     this.editFormData.Title = this.showTitle;
     this.editFormData.Description = this.showDescription;
     this.editFormData.Status = this.showStatus;

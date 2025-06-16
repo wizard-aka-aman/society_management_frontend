@@ -26,11 +26,12 @@ export class BillsComponent {
   selectedBill: any;
   status: any;
   usernameForMyBills: string = ""
-  paymentStripeForm: any = {}
-  filterUnPaid = true;
-  filterPaid = true;
+  paymentStripeForm: any = {} 
   allBills:any[] =[];
-  
+  filterBasisOnPaid :string ="all"
+  filterBasisOnFlatNumber :any = null
+filterBasisOnStartingDate: any;
+filterBasisOnEndingDate: any;
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService , private route : Router) {
  
     
@@ -57,37 +58,59 @@ export class BillsComponent {
       }
     })
   }
-  filter(){
-    console.log(this.filterPaid);
-    console.log(this.filterUnPaid);
-    console.log(this.bills);
+  filter(){ 
+    console.log(this.filterBasisOnPaid);
     
+    console.log(this.filterBasisOnFlatNumber);
+    console.log(this.filterBasisOnStartingDate);
+    console.log(this.filterBasisOnEndingDate);
     
-      this.bills =  this.allBills.filter(e => {
-        if(this.filterPaid && this.filterUnPaid){
+    this.bills = this.allBills;
+      this.bills =  this.bills.filter(e => {
+        if(this.filterBasisOnPaid == 'all'){
          return e
         }
-        else if(this.filterPaid){
+        else if(this.filterBasisOnPaid == 'paid'){
           return e.isPaid 
         }
-        else if(this.filterUnPaid){
+        else if(this.filterBasisOnPaid == 'unpaid'){
           return !e.isPaid  
         }
          return false;
   })
 
+  this.bills = this.bills.filter(e =>{
+    if(this.filterBasisOnFlatNumber == null){  
+      return e
+    }
+    else{
+      return e.flats.flatNumber == this.filterBasisOnFlatNumber
+    }
+    
+  })
+  this.bills = this.bills.filter(e => {
+    if(this.filterBasisOnStartingDate == undefined || this.filterBasisOnEndingDate == undefined || this.filterBasisOnStartingDate == null || this.filterBasisOnStartingDate == '' || this.filterBasisOnEndingDate == null || this.filterBasisOnEndingDate == ''){
+      return e;
+    }else if(this.filterBasisOnStartingDate>= this.filterBasisOnEndingDate){
+      return e;
+    }else{
+      return e.dueDate >= this.filterBasisOnStartingDate && e.dueDate <= this.filterBasisOnEndingDate;
+    }
+  })
+    console.log(this.bills);
+
     
   }
-  viewBooking(Bill: any) {
+  viewBill(Bill: any) {
     // View full Bill details
     console.log(Bill);
     this.selectedBill = Bill;
     this.status = Bill.status
   }
 
-  viewBill(bill: any) {
-    // Show modal or download PDF
-    console.log('Viewing', bill.billId);
+  CloseViewBill(){
+    this.selectedBill = null;
+     this.status = null;
   }
 
   payNow(bill: any) {
@@ -128,6 +151,7 @@ export class BillsComponent {
     })
   }
   AddBill() {
+    this.type = this.type.trim();
     if (this.name == "" || this.type == "" || this.amount < 1) {
       this.toastr.error('Please fill all the correctly fields', "error");
       return;
