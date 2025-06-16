@@ -6,15 +6,15 @@ import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-bookings',
-  imports: [CommonModule, DatePipe, ReactiveFormsModule ,FormsModule],
+  imports: [CommonModule, DatePipe, ReactiveFormsModule, FormsModule],
   templateUrl: './bookings.component.html',
   styleUrl: './bookings.component.css'
 })
 export class BookingsComponent {
-  bookings: any ;
+  bookings: any;
   role: string = ""
   bookingForm: FormGroup = new FormGroup({
-    facility: new FormControl('', Validators.required), 
+    facility: new FormControl('', Validators.required),
     startTime: new FormControl('', Validators.required),
     endTime: new FormControl('', Validators.required),
     status: new FormControl('', Validators.required),
@@ -23,18 +23,20 @@ export class BookingsComponent {
   formData: any = {}
   name: string = "";
   societyId: number = 0;
-  selectedBooking :any ; 
-  editFormData :any = {}
-  status :string = ""
-  reason :string = ""
-   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
-    this.role =   this.ServiceSrv.getRole();
+  selectedBooking: any;
+  editFormData: any = {}
+  status: string = ""
+  reason: string = ""
+  filterBasisOnStatus: string = "All";
+  AllBooking: any;
+  constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
+    this.role = this.ServiceSrv.getRole();
     this.name = this.ServiceSrv.getUserName()
-    this.societyId = this.ServiceSrv.getSocietyId() 
+    this.societyId = this.ServiceSrv.getSocietyId()
     this.FetchBookings()
     this.todayDate = this.getTodayDateAsString();
-    console.log(this.todayDate); 
-    
+    console.log(this.todayDate);
+
 
   }
   getTodayDateAsString() {
@@ -53,11 +55,11 @@ export class BookingsComponent {
 
   SendBooking() {
     this.formData = this.bookingForm.value;
-    this.formData.Name = this.name; 
+    this.formData.Name = this.name;
     this.formData.status = "Pending"
     this.bookingForm.value.facility = this.bookingForm.value.facility.trim();
-    console.log(this.bookingForm.value); 
-    if(this.bookingForm.value.facility == "" || this.bookingForm.value.endTime =="" || this.bookingForm.value.startTime ==""){
+    console.log(this.bookingForm.value);
+    if (this.bookingForm.value.facility == "" || this.bookingForm.value.endTime == "" || this.bookingForm.value.startTime == "") {
       this.toastr.error('Please fill all the fields', 'Error');
       return;
     }
@@ -65,15 +67,15 @@ export class BookingsComponent {
     this.ServiceSrv.AddBooking(this.bookingForm.value).subscribe({
       next: (res) => {
         console.log(res);
-        if(res){
+        if (res) {
           this.toastr.success("Booking  Added Successfully", "success");
           this.bookingForm.reset();
           this.FetchBookings()
           this.formData = {}
         }
-        else{
+        else {
           this.toastr.error(this.formData.Name + " not a flat owner or Timing is not correct", "error");
-          
+
         }
       },
       error: (err) => {
@@ -88,8 +90,8 @@ export class BookingsComponent {
   viewBooking(booking: any) {
     // View full booking details
     console.log(booking);
-    this.selectedBooking = booking; 
-    this.status = booking.status 
+    this.selectedBooking = booking;
+    this.status = booking.status
     this.reason = booking?.reason
   }
   FetchBookings() {
@@ -98,6 +100,7 @@ export class BookingsComponent {
         next: (response: any) => {
           console.log(response);
           this.bookings = response
+          this.AllBooking = response
         },
         error: (error) => {
           console.log(error);
@@ -105,10 +108,11 @@ export class BookingsComponent {
       })
     }
     else {
-      console.log(this.name); 
+      console.log(this.name);
       this.ServiceSrv.GetMyBooking(this.name).subscribe({
         next: (response: any) => {
           console.log(response);
+          this.AllBooking = response
           this.bookings = response
         },
         error: (error) => {
@@ -132,18 +136,37 @@ export class BookingsComponent {
         error: (err) => {
           console.log(err);
           this.toastr.error("Booking Cancelled Failed", "success");
-          this.FetchBookings() 
+          this.FetchBookings()
         }
       })
     }
   }
-  Edit(){ 
-    if(this.reason != null || this.reason != undefined){
+  filter() {
+  console.log(this.filterBasisOnStatus); 
+    this.bookings = this.AllBooking;
+      this.bookings =  this.bookings.filter((e:any) => {
+        if(this.filterBasisOnStatus == 'All'){
+         return e
+        }
+        else if(this.filterBasisOnStatus == "Rejected"){
+          return e.status == "Rejected" 
+        }
+        else if(this.filterBasisOnStatus == "Pending"){
+          return e.status == "Pending"
+        } 
+          return e.status == "Approved" 
+  })
+
+ 
+    console.log(this.bookings);
+  }
+  Edit() {
+    if (this.reason != null || this.reason != undefined) {
       this.reason = this.reason.trim();
     }
-    if(this.reason == "" || this.reason == null){
+    if (this.reason == "" || this.reason == null) {
       this.toastr.error("Please Enter Reason", "error");
-      return ;
+      return;
     }
     this.editFormData.Name = this.name;
     this.editFormData.endTime = this.selectedBooking.endTime;
@@ -152,22 +175,22 @@ export class BookingsComponent {
     this.editFormData.status = this.status;
     this.editFormData.Reason = this.reason;
     console.log(this.editFormData);
-    
-    this.ServiceSrv.UpdateBooking(this.selectedBooking.bookingsId , this.editFormData).subscribe({
-      next: (response: any) =>{
+
+    this.ServiceSrv.UpdateBooking(this.selectedBooking.bookingsId, this.editFormData).subscribe({
+      next: (response: any) => {
         console.log(response);
         this.toastr.success("Booking Updated Successfully", "success");
         this.FetchBookings() // Refresh the bookings list
 
       },
-      error: (error) =>{
+      error: (error) => {
         console.log(error);
         this.toastr.error("Booking Update Failed", "success");
         this.FetchBookings() // Refresh the bookings list
 
       }
     })
-    
+
   }
 }
 

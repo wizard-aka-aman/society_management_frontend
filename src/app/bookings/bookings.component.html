@@ -13,6 +13,22 @@
       ➕ Book Facility
     </button>
   </div>
+   <div class="card shadow-sm p-3 mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Filter: Completed Status</label>
+        <select class="form-select" [(ngModel)]="filterBasisOnStatus">
+          <option value="All">All</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Pending">Pending</option>
+        </select>
+      </div> 
+      <div class="col-12 text-end mt-2">
+        <button class="btn btn-outline-primary" (click)="filter()">🔍 Apply Filters</button>
+      </div>
+    </div>
+  </div>
   <div class="table-responsive">
     <table class="table table-striped">
       <thead class="table-dark">
@@ -40,7 +56,7 @@
               🔍 View
             </button>
             <button
-            *ngIf="booking.flats.users.name == name"
+            *ngIf="booking?.flats?.users?.name == name"
               class="btn btn-outline-danger btn-sm"
               (click)="cancelBooking(booking)"
             >
@@ -151,20 +167,20 @@
           <div class="row g-3">
             <div class="col-md-6">
               <strong>Name:</strong>
-              <div>{{ selectedBooking?.flats.users.name }}</div>
+              <div>{{ selectedBooking?.flats?.users?.name }}</div>
             </div>
             <div class="col-md-6">
               <strong>Email:</strong>
-              <div>{{ selectedBooking?.flats.users.email }}</div>
+              <div>{{ selectedBooking?.flats?.users?.email }}</div>
             </div>
 
             <div class="col-md-6">
               <strong>Flat Number:</strong>
-              <div>{{ selectedBooking?.flats.flatNumber }}</div>
+              <div>{{ selectedBooking?.flats?.flatNumber }}</div>
             </div>
             <div class="col-md-6">
               <strong>Block:</strong>
-              <div>{{ selectedBooking?.flats.block }}</div>
+              <div>{{ selectedBooking?.flats?.block }}</div>
             </div>
 
             <div class="col-md-6">

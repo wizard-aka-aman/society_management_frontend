@@ -62,13 +62,13 @@
       </thead>
       <tbody>
         <tr *ngFor="let bill of bills" class="text-center">
-          <td *ngIf="role === 'Admin'">{{ bill.flats.flatNumber }}</td>
-          <td>{{ bill.type }}</td>
-          <td>₹{{ bill.amount }}</td>
-          <td>{{ bill.dueDate | date }}</td>
-          <td>{{ bill.generatedDate | date: 'medium' }}</td>
+          <td *ngIf="role === 'Admin'">{{ bill.flats?.flatNumber }}</td>
+          <td>{{ bill?.type }}</td>
+          <td>₹{{ bill?.amount }}</td>
+          <td>{{ bill?.dueDate | date }}</td>
+          <td>{{ bill?.generatedDate | date: 'medium' }}</td>
           <td>
-            {{ bill.paidDate ? (bill.paidDate | date: 'medium') : 'Not Paid' }}
+            {{ bill?.paidDate ? (bill?.paidDate | date: 'medium') : 'Not Paid' }}
           </td>
           <td>
             <div class="d-flex flex-wrap justify-content-center gap-1">
@@ -76,12 +76,12 @@
                 🔍 View Bill
               </button>
 
-              <button *ngIf="bill.paidDate" class="btn btn-sm btn-outline-primary"  >
+              <button *ngIf="bill?.paidDate" class="btn btn-sm btn-outline-primary"  >
                 🔽 View Payment
               </button>
 
               <button
-                *ngIf="!bill.paidDate && bill.flats.users.name === usernameForMyBills"
+                *ngIf="!bill.paidDate && bill?.flats?.users?.name === usernameForMyBills"
                 class="btn btn-sm btn-success"
                 (click)="payNow(bill)"
               >
@@ -143,10 +143,10 @@
       </div>
       <div class="modal-body">
         <div class="row g-3">
-          <div class="col-md-6"><strong>Name:</strong> {{ selectedBill?.flats.users.name }}</div>
-          <div class="col-md-6"><strong>Email:</strong> {{ selectedBill?.flats.users.email }}</div>
-          <div class="col-md-6"><strong>Flat Number:</strong> {{ selectedBill?.flats.flatNumber }}</div>
-          <div class="col-md-6"><strong>Block:</strong> {{ selectedBill?.flats.block }}</div>
+          <div class="col-md-6"><strong>Name:</strong> {{ selectedBill?.flats?.users?.name }}</div>
+          <div class="col-md-6"><strong>Email:</strong> {{ selectedBill?.flats?.users?.email }}</div>
+          <div class="col-md-6"><strong>Flat Number:</strong> {{ selectedBill?.flats?.flatNumber }}</div>
+          <div class="col-md-6"><strong>Block:</strong> {{ selectedBill?.flats?.block }}</div>
           <div class="col-md-6"><strong>Amount:</strong> ₹{{ selectedBill?.amount }}</div>
           <div class="col-md-6">
             <strong>Status:</strong>

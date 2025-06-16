@@ -34,6 +34,10 @@ export class ComplaintsComponent {
   showEmail: string = "";
   showDateResolved :string = ""
   showFeedBack :string = ""
+filterBasisOnStartingDate: any;
+filterBasisOnEndingDate: any;
+filterBasisOnCompilation: string = "All";
+  Allcomplaints: any;
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
     this.Name = this.ServiceSrv.getUserName();
     this.Role = this.ServiceSrv.getRole();
@@ -115,6 +119,7 @@ export class ComplaintsComponent {
         next: (response) => {
           console.log(response);
           this.complaints = response
+          this.Allcomplaints = response
         },
         error: (error) => {
           console.log(error);
@@ -126,6 +131,7 @@ export class ComplaintsComponent {
         next: (response) => {
           console.log(response);
           this.complaints = response
+          this.Allcomplaints = response
         },
         error: (error) => {
           console.log(error);
@@ -136,10 +142,40 @@ export class ComplaintsComponent {
   Close() {
     this.editModalVisible = false
   }
-  Save() {
-    this.showTitle = this.showTitle.trim();
-    this.showDescription = this.showDescription.trim();
-    this.showFeedBack = this.showFeedBack.trim();
+  filter(){
+    console.log(this.filterBasisOnCompilation);
+     
+    console.log(this.filterBasisOnStartingDate);
+    console.log(this.filterBasisOnEndingDate);
+    
+    this.complaints = this.Allcomplaints;
+      this.complaints =  this.complaints.filter((e:any) => {
+        if(this.filterBasisOnCompilation == 'All'){
+         return e
+        }
+        else if(this.filterBasisOnCompilation == "Completed"){
+          return e.status == "Completed" 
+        }
+        else if(this.filterBasisOnCompilation == "In Progress"){
+          return e.status == "In Progress"
+        } 
+          return e.status == "Pending" 
+  })
+
+ 
+  this.complaints = this.complaints.filter((e:any) => {
+    if(this.filterBasisOnStartingDate == undefined || this.filterBasisOnEndingDate == undefined || this.filterBasisOnStartingDate == null || this.filterBasisOnStartingDate == '' || this.filterBasisOnEndingDate == null || this.filterBasisOnEndingDate == ''){
+      return e;
+    }else if(this.filterBasisOnStartingDate>= this.filterBasisOnEndingDate){
+      return e;
+    }else{
+      return e.dateCreated >= this.filterBasisOnStartingDate && e.dateCreated <= this.filterBasisOnEndingDate;
+    }
+  })
+    console.log(this.complaints);
+
+  }
+  Save() {   
     if(this.showFeedBack == "" ||this.showTitle == "" || this.showDescription == "") {
       this.toastr.error("Please fill all fields", "Error")
       return ;
