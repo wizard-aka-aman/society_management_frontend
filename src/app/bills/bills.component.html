@@ -1,20 +1,32 @@
 <div class="container right-side mt-4">
- <div class="d-flex justify-content-between align-items-center mb-3">
+  <div class="d-flex justify-content-between align-items-center mb-3">
     @if(role=='Admin'){
-      <h2>🧾 Generate Bills</h2>
-      <button  class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">➕ Add Bills</button>
-    }
-    @else {
-      <h2>🧾 My Bills</h2>
+    <h2>🧾 Generate Bills</h2>
+    <button
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      ➕ Add Bills
+    </button>
+    } @else {
+    <h2>🧾 My Bills</h2>
     }
   </div>
-
+  Paid : <input type="checkbox" [(ngModel)]="filterPaid" /> <br />
+  UnPaid : <input type="checkbox" [(ngModel)]="filterUnPaid" />
+  <button
+    class="btn btn-primary" 
+    (click)="filter()"
+  >
+    Filter
+  </button>
   <div class="table-responsive">
     <table class="table table-bordered table-striped align-middle">
       <thead class="table-dark">
         <tr>
           @if(role=="Admin"){
-            <th>Flat Number</th> 
+          <th>Flat Number</th>
           }
           <th>Type</th>
           <th>Amount</th>
@@ -27,28 +39,44 @@
       <tbody>
         <tr *ngFor="let bill of bills">
           @if(role=="Admin"){
-            <td>{{ bill.flats.flatNumber }}</td>
+          <td>{{ bill.flats.flatNumber }}</td>
           }
           <td>{{ bill.type }}</td>
-          <td>₹{{ bill.amount  }}</td>
+          <td>₹{{ bill.amount }}</td>
           <td>{{ bill.dueDate | date }}</td>
-          <td>{{ bill.generatedDate | date : "medium"}}</td>
+          <td>{{ bill.generatedDate | date : "medium" }}</td>
           @if(bill.paidDate != null){
-            <td>{{ bill.paidDate }}</td> 
-          }
-          @else {
-            <td>Not Paid</td> 
+          <td>{{ bill.paidDate }}</td>
+          } @else {
+          <td>Not Paid</td>
           }
           <td>
-             <button class="btn btn-outline-info btn-sm me-2"  data-bs-toggle="modal" data-bs-target="#bookingModalview" (click)="viewBooking(bill)">🔍 View</button>
-             
-           @if(role!="Admin"){
-             <button *ngIf="bill.paidDate != null" class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
-            <button *ngIf="bill.paidDate == null" class="btn btn-success btn-sm ms-2" (click)="payNow(bill)">💳 Pay</button>
-           }
-           @else {
-            <button *ngIf="bill.paidDate != null" class="btn btn-outline-primary btn-sm" (click)="viewBill(bill)">🔽 View</button>
-           }
+            <button
+              class="btn btn-outline-info btn-sm me-2"
+              data-bs-toggle="modal"
+              data-bs-target="#bookingModalview"
+              (click)="viewBooking(bill)"
+            >
+              🔍 View Bill
+            </button>
+
+            <button
+              *ngIf="bill.paidDate != null"
+              class="btn btn-outline-primary btn-sm"
+              (click)="viewBill(bill)"
+            >
+              🔽 View Payment
+            </button>
+            <button
+              *ngIf="
+                bill.paidDate == null &&
+                bill.flats.users.name == usernameForMyBills
+              "
+              class="btn btn-success btn-sm ms-2"
+              (click)="payNow(bill)"
+            >
+              💳 Pay
+            </button>
           </td>
         </tr>
       </tbody>
@@ -56,59 +84,105 @@
   </div>
 </div>
 
-
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Bill</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
         <!-- New form fields for Title and Description -->
-        
+
         <div class="mb-3">
           <label for="Type" class="form-label">Flat Number</label>
           <select name="name" [(ngModel)]="name" id="">
             <option *ngFor="let name of getAllFlats" [value]="name.users.name">
-              
-                {{ name.flatNumber }}
-               
+              {{ name.flatNumber }}
             </option>
           </select>
         </div>
         <div class="mb-3">
           <label for="Type" class="form-label">Type</label>
-          <input type="text" class="form-control" id="Type"  [(ngModel)]="type"  placeholder="Type"> 
+          <input
+            type="text"
+            class="form-control"
+            id="Type"
+            [(ngModel)]="type"
+            placeholder="Type"
+          />
         </div>
         <div class="mb-3">
           <label for="Amount" class="form-label">Amount</label>
-          <input type="number" class="form-control" id="Amount"  [(ngModel)]="amount"   placeholder="Enter Amount"> 
+          <input
+            type="number"
+            class="form-control"
+            id="Amount"
+            [(ngModel)]="amount"
+            placeholder="Enter Amount"
+          />
         </div>
         <div class="mb-3">
           <label for="complaintDescription" class="form-label">Due Date</label>
-          <input type="date" class="form-control" id="complaintDescription" [(ngModel)]="dueDate"  placeholder="Enter Date"> 
-        </div>  
+          <input
+            type="date"
+            class="form-control"
+            id="complaintDescription"
+            [(ngModel)]="dueDate"
+            placeholder="Enter Date"
+          />
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"  >Close</button>
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="AddBill()">Submit </button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+          (click)="AddBill()"
+        >
+          Submit
+        </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="modal fade" id="bookingModalview" tabindex="-1" aria-labelledby="bookingModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="bookingModalview"
+  tabindex="-1"
+  aria-labelledby="bookingModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <div class="modal-content shadow-lg">
       <div class="modal-header bg-primary text-white">
         <h5 class="modal-title" id="bookingModalLabel">Bill Details</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close btn-close-white"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
 
       <div class="modal-body">
-        <div  >
+        <div>
           <div class="row mb-3">
             <div class="col-md-6">
               <strong>Name:</strong> {{ selectedBill?.flats.users.name }}
@@ -132,23 +206,22 @@
               <strong>Amount:</strong> ₹{{ selectedBill?.amount }}
             </div>
             <div class="col-md-6">
-             <div >
-               <strong>Paid Status:</strong>
-              <span class="badge bg-warning text-dark">{{ selectedBill?.isPaid }}</span>
-             </div>
- 
+              <div>
+                <strong>Paid Status:</strong>
+                <span class="badge bg-warning text-dark">{{
+                  selectedBill?.isPaid
+                }}</span>
+              </div>
             </div>
           </div>
 
           <div class="row mb-3">
             @if(selectedBill?.paidDate == null){
-              <div class="col-md-6">
-              <strong>Paid Date:</strong> Not Paid
-            </div>
-            }
-            @else {
-              <div class="col-md-6">
-              <strong>Paid Date:</strong> {{ selectedBill?.paidDate | date:'medium' }}
+            <div class="col-md-6"><strong>Paid Date:</strong> Not Paid</div>
+            } @else {
+            <div class="col-md-6">
+              <strong>Paid Date:</strong>
+              {{ selectedBill?.paidDate | date : "medium" }}
             </div>
             }
             <div class="col-md-6">
@@ -158,18 +231,25 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <strong>Created At:</strong> {{ selectedBill?.generatedDate | date:'medium' }}
+              <strong>Created At:</strong>
+              {{ selectedBill?.generatedDate | date : "medium" }}
             </div>
-            <div class="col-md-6"  >
-              <strong>Due Date:</strong> {{ selectedBill?.dueDate | date:'medium' }}
+            <div class="col-md-6">
+              <strong>Due Date:</strong>
+              {{ selectedBill?.dueDate | date : "medium" }}
             </div>
           </div>
- 
         </div>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
         <!-- <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" (click)="Edit()" >Save</button> -->
       </div>
     </div>

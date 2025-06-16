@@ -8,3 +8,37 @@
    margin-left: 0;
   }
 }
+
+
+.home-dashboard h2 {
+  font-size: 2rem;
+}
+
+.stat-card {
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease-in-out;
+}
+.stat-card:hover {
+  transform: scale(1.03);
+}
+
+.card-header {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.chart-wrapper {
+  position: relative; 
+  width: 100%;
+}
+.chart-wrapper canvas {
+  width: 100% !important;
+  height: auto !important;
+}
+
+
+@media (max-width: 576px) {
+  .stat-card .display-6 {
+    font-size: 1.5rem;
+  }
+}

@@ -26,7 +26,7 @@ export class ServiceService {
   logout() {
     return this.http.get(`${this.BaseUrl}/logout`);
   }
-  GetUserDetail(name:string){
+  GetUserDetail(name: string) {
     return this.http.get(`${this.BaseUrl}/GetUserDetail/${name}`);
   }
   AddFlat(item: any) {
@@ -48,15 +48,21 @@ export class ServiceService {
   UpdateComplaints(item: any, id: number) {
     return this.http.put(`${this.BaseUrl}/Complaints/UpdateComplaints/${id}`, item)
   }
-  DeleteComplaints(id :number){
+  DeleteComplaints(id: number) {
     return this.http.delete(`${this.BaseUrl}/Complaints/DeleteComplaints/${id}`)
   }
-  TotalComplaints(id :number){
+  TotalComplaints(id: number) {
     return this.http.get(`${this.BaseUrl}/Complaints/TotalComplaints/${id}`)
   }
-  
-  MyComplaintsNumber(name :string){
+  TotalCompletedComplaints(id: number) {
+    return this.http.get(`${this.BaseUrl}/Complaints/TotalCompletedComplaints/${id}`)
+  }
+
+  MyComplaintsNumber(name: string) {
     return this.http.get(`${this.BaseUrl}/Complaints/MyComplaintsNumber/${name}`);
+  }
+  MyCompletedComplaintsNumber(name: string) {
+    return this.http.get(`${this.BaseUrl}/Complaints/MyCompletedComplaintsNumber/${name}`);
   }
 
   Getallusers(id: number) {
@@ -75,70 +81,82 @@ export class ServiceService {
   DeleteUser(name: string) {
     return this.http.delete(`${this.BaseUrl}/DeleteUser/` + name);
   }
-  
+
   registerAdmin(item: any) {
     return this.http.post(`${this.BaseUrl}/registerAdmin`, item);
   }
-  AddBills(item:any){
-    return this.http.post(`${this.BaseUrl}/Bills/addbills`,item);
+  AddBills(item: any) {
+    return this.http.post(`${this.BaseUrl}/Bills/addbills`, item);
   }
-  GetAllBills(id :number){
+  GetAllBills(id: number) {
     return this.http.get(`${this.BaseUrl}/Bills/GetAllBills/${id}`);
   }
-  GetMyBills(name :string){
+  GetMyBills(name: string) {
     return this.http.get(`${this.BaseUrl}/Bills/GetMyBills/${name}`);
   }
-  GetAllNotices(id :number){
+  GetAllNotices(id: number) {
     return this.http.get(`${this.BaseUrl}/Notices/GetAllNotices/${id}`);
   }
-  GetOneNotice(id :number){
+  GetOneNotice(id: number) {
     return this.http.get(`${this.BaseUrl}/Notices/GetOneNotice/${id}`);
   }
-  AddNotices(item:any){
-    return this.http.post(`${this.BaseUrl}/Notices/AddNotices` , item);
+  AddNotices(item: any) {
+    return this.http.post(`${this.BaseUrl}/Notices/AddNotices`, item);
   }
-  UpdateNotices(id:number ,item:any){
-    return this.http.put(`${this.BaseUrl}/Notices/UpdateNotices/${id}` , item);
+  UpdateNotices(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Notices/UpdateNotices/${id}`, item);
   }
-  DeleteNotices(id:number){
+  PayBill(id: number) {
+    return this.http.get(`${this.BaseUrl}/Bills/PayBill/${id}`);
+  }
+  paymentStripe(item: any) {
+    return this.http.post(`${this.BaseUrl}/Payment/CreateCheckout`, item);
+  }
+  DeleteNotices(id: number) {
     return this.http.delete(`${this.BaseUrl}/Notices/DeleteNotices/${id}`);
   }
-
-  AddBooking(item:any){
-    return this.http.post(`${this.BaseUrl}/Bookings/AddBookings`,item);
+  AdminTotalNumberBookings(id: number) {
+    return this.http.get(`${this.BaseUrl}/Bookings/AdminTotalNumberBookings/${id}`);
   }
-  GetAllBooking(id :number){
+  MyTotalNumberBookings(name: string) {
+    return this.http.get(`${this.BaseUrl}/Bookings/MyTotalNumberBookings/${name}`);
+  }
+
+  AddBooking(item: any) {
+    return this.http.post(`${this.BaseUrl}/Bookings/AddBookings`, item);
+  }
+  GetAllBooking(id: number) {
     return this.http.get(`${this.BaseUrl}/Bookings/GetAllBookings/${id}`);
   }
-  GetMyBooking(name:string){
+  GetMyBooking(name: string) {
     return this.http.get(`${this.BaseUrl}/Bookings/GetMyBookings/${name}`);
   }
-  UpdateBooking(id:number,item:any){
-    return this.http.put(`${this.BaseUrl}/Bookings/UpdateBookings/${id}/`,item)
+  UpdateBooking(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Bookings/UpdateBookings/${id}/`, item)
   }
-  DeleteBooking(id:number){
+  DeleteBooking(id: number) {
     return this.http.delete(`${this.BaseUrl}/Bookings/DeleteBookings/${id}`);
   }
-  GetAllVisitors(id:number){
+  GetAllVisitors(id: number) {
     return this.http.get(`${this.BaseUrl}/Visitors/GetAllVisitors/${id}`);
   }
-  GetOneVisitors(id:number){
+  GetOneVisitors(id: number) {
     return this.http.get(`${this.BaseUrl}/Visitors/GetOneVisitors/${id}`);
   }
-  UpdateVisitor(id :number , item:any){
-    return this.http.put(`${this.BaseUrl}/Visitors/UpdateVisitors/${id}`,item);
+  UpdateVisitor(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Visitors/UpdateVisitors/${id}`, item);
   }
-  DeleteVisitor(id :number){
+  DeleteVisitor(id: number) {
     return this.http.delete(`${this.BaseUrl}/Visitors/DeleteVisitors/${id}`);
   }
-  AddVisitors(item:any){
-    return this.http.post(`${this.BaseUrl}/Visitors/AddVisitors`,item);
+  AddVisitors(item: any) {
+    return this.http.post(`${this.BaseUrl}/Visitors/AddVisitors`, item);
   }
 
-  
 
-  
-  
+
+
+
 
 
 

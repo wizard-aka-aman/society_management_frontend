@@ -198,6 +198,11 @@
               <option [defaultSelected]="true" value="">
                 Not Assigned
               </option>
+             @if(editFlatUsername != undefined){
+               <option   [value]="editFlatUsername">
+                {{editFlatUsername}}
+              </option>
+             }
 
             </select>
             

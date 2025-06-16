@@ -23,7 +23,8 @@ export class LayoutComponent {
     this.profileEmail = this.ServiceSrv.getEmail();
     this.userName = this.ServiceSrv.getUserName();
     this.Role = this.ServiceSrv.getRole();
-
+    console.log(this.userName);
+    
     this.ServiceSrv.GetUserDetail(this.userName).subscribe({
       next: (data: any) => {
         this.flatProfile = data.flat;

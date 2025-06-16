@@ -13,6 +13,8 @@ import { FlatsComponent } from './flats/flats.component';
 import { authGuard } from './auth.guard';
 import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { RegisterAdminComponent } from './register-admin/register-admin.component';
+import { SuccessComponent } from './success/success.component';
+import { CancelComponent } from './cancel/cancel.component';
 
 export const routes: Routes = [
     {
@@ -77,6 +79,16 @@ export const routes: Routes = [
             {
                 path: 'registerAdmin',
                 component: RegisterAdminComponent,
+                canActivate : [authGuard],
+            },
+            {
+                path: 'success',
+                component: SuccessComponent,
+                canActivate : [authGuard],
+            },
+            {
+                path: 'cancel',
+                component: CancelComponent,
                 canActivate : [authGuard],
             }
 

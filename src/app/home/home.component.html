@@ -1,53 +1,90 @@
-<div class="container right-side mt-4">
-  <h2 class="mb-3">👋 Welcome, {{ userName }}</h2> 
+<div class="container-fluid right-side px-4 py-4 home-dashboard">
+  <h2 class="fw-bold mb-4">👋 Welcome, <span class="text-primary">{{ userName }}</span></h2>
 
   <!-- Stats Cards -->
-  <div class="row mt-4">
-    <div class="col-md-3 mb-3">
-      <div class="card text-white bg-danger h-100">
+  <div class="row g-4">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm stat-card   text-dark text-center">
         <div class="card-body">
-          <h5 class="card-title">💰 Total Dues</h5>
-          <p class="card-text fs-4">₹{{ totalDues }}</p>
+          <h2>Payment</h2>
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart" ></canvas>
+          </div> 
         </div>
       </div>
     </div>
-    <div class="col-md-3 mb-3">
-      <div class="card text-white bg-warning h-100">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm stat-card   text-dark text-center">
         <div class="card-body">
-          <h5 class="card-title">🛠️ Pending Complaints</h5>
-          <p class="card-text fs-4">{{ complaintCount }}</p>
+          <h2>Complaints</h2>
+          @if(role =='Admin'){
+            <div class="card-body chart-wrapper">
+              <canvas id="MyChart2" ></canvas>
+            </div> 
+          }@else{
+            <div class="card-body chart-wrapper">
+              <canvas id="MyChart3" ></canvas>
+            </div> 
+          }
         </div>
       </div>
     </div>
-    <div class="col-md-3 mb-3">
-      <div class="card text-white bg-success h-100">
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm stat-card   text-dark text-center">
         <div class="card-body">
-          <h5 class="card-title">📅 Upcoming Booking</h5>
-          <p class="card-text fs-6"> </p>
+          <h2>Bookings</h2>
+          @if(role == 'Admin'){
+            <div class="card-body chart-wrapper">
+          <canvas id="MyChart4" ></canvas>
         </div>
+          }@else {
+            <div class="card-body chart-wrapper">
+          <canvas id="MyChart5" ></canvas>
+        </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pie Chart -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="card shadow-sm">
+        <div class="card-header bg-light">
+          <h5 class="mb-0">📊 Bill Breakdown</h5>
+        </div>
+        
       </div>
     </div>
   </div>
 
   <!-- Notices -->
-  <div class="card   mt-4">
-    <div class="card-header bg-primary text-white">📰 Recent Notices</div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item" *ngFor="let notice of notices ">
-        <strong>{{ notice.title  }}</strong> <br />
-        <small class="text-muted">{{ notice.description   }}</small>
-      </li>
-    </ul>
-  </div>
+  <div class="row mt-5">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">📰 Recent Notices</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let notice of notices">
+            <strong>{{ notice.title }}</strong>
+            <p class="mb-0 text-muted small">{{ notice.description }}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-  <!-- Visitor History -->
-  <div class="card   mt-4">
-    <div class="card-header bg-secondary text-white">🚪 Recent Visitors</div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item" *ngFor="let visitor of visitors">
-        <strong>{{ visitor.name }}</strong> — {{ visitor.purpose }} <br />
-        <small class="text-muted">In: {{ visitor.visitDateTime | date:'medium' }} </small>
-      </li>
-    </ul>
+    <!-- Visitors -->
+    <div class="col-md-6 mt-4 mt-md-0">
+      <div class="card shadow-sm">
+        <div class="card-header bg-secondary text-white">🚪 Recent Visitors</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" *ngFor="let visitor of visitors">
+            <strong>{{ visitor.name }}</strong> — {{ visitor.purpose }}
+            <br />
+            <small class="text-muted">In: {{ visitor.visitDateTime | date : "medium" }}</small>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </div>

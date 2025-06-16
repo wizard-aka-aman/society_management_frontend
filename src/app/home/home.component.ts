@@ -1,6 +1,9 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ServiceService } from '../../services/service.service';
+import { Chart, registerables } from 'chart.js'
+Chart.register(...registerables)
+
 
 @Component({
   selector: 'app-home',
@@ -8,79 +11,327 @@ import { ServiceService } from '../../services/service.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   userName: string = "";
   totalDues: number = 0;
+  unPaid: number = 0;
+  paid: number = 0;
   complaintCount: number = 0;
   notices: any;
-  visitors: any; 
+  visitors: any;
   billsdata: any[] = [];
-  role : string = ""
-  societyId : number = 0; 
-  
+  role: string = ""
+  societyId: number = 0;
 
+  totalNumberBooking: any = {}
+
+  data: any
+  data2: any
+  data3: any
+  data4: any
+  data5: any
+
+
+  config: any;
+  config2: any;
+  config3: any;
+  config4: any;
+  config5: any;
+
+  chart: any;
+  chart2: any;
+  chart3: any;
+  chart4: any;
+  chart5: any;
 
   constructor(private ServiceSrv: ServiceService) {
     this.userName = this.ServiceSrv.getUserName();
     this.role = this.ServiceSrv.getRole();
     this.societyId = this.ServiceSrv.getSocietyId();
-    
+
 
     this.ServiceSrv.GetMyBills(this.userName).subscribe({
 
       next: (data: any) => {
         this.billsdata = data;
-        console.log(data);   
-        this.totalDues = this.billsdata.map((e: any) => { this.totalDues += e.amount;  return this.totalDues})[this.billsdata.length-1];
-        console.log(this.totalDues);
+        console.log(data);
+        this.billsdata.forEach(bill => {
+          if (bill.isPaid) {
+            this.paid += bill.amount;
+          } else {
+            this.unPaid += bill.amount;
+          }
+        });
+        console.log(this.paid);
+        console.log(this.unPaid);
+        this.totalDues = this.unPaid + this.paid
+
+
+        this.data = {
+          labels: [
+            'Paid Amount ',
+            'UnPaid Amount '
+          ],
+          datasets: [{
+            // data: [50, 24, 26],
+            data: [
+              this.paid,
+              this.unPaid
+            ],
+            backgroundColor: [
+              'rgb(54, 162, 235)',
+              'rgb(255, 99, 132)',
+            ],
+            hoverOffset: 4
+          }]
+        };
+
+        this.config = {
+          type: 'pie',
+          data: this.data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        };
+        this.chart = new Chart('MyChart', this.config)
+
+
       },
       error: (error) => {
         console.error(error);
       }
     })
-   if(this.role == "Admin"){
-     this.ServiceSrv.TotalComplaints(this.societyId).subscribe({
-      next: (data: any) =>{
-        this.complaintCount = data;
+    if (this.role == "Admin") {
+      this.ServiceSrv.TotalComplaints(this.societyId).subscribe({
+        next: (data: any) => {
+          this.complaintCount = data;
+       
+      this.ServiceSrv.TotalCompletedComplaints(this.societyId).subscribe({
+        next: (data: any) => {
+          this.data2 = {
+            labels: [
+              'UnCompleted Complaint ',
+              'Completed Complaint '
+            ],
+            datasets: [{
+              data: [
+                this.complaintCount,
+                data
+              ],
+              backgroundColor: [
+                'rgb(158, 72, 72)',
+                'rgb(109, 208, 96)'
+              ],
+              hoverOffset: 4
+            }]
+          };
+
+          this.config2 = {
+            type: 'pie',
+            data: this.data2,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }
+          };
+          this.chart2 = new Chart('MyChart2', this.config2)
+
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      })
+       },
+        error: (error) => {
+          console.error(error);
+        }
+      })
+
+      this.ServiceSrv.AdminTotalNumberBookings(this.societyId).subscribe({
+        next: (data: any) => {
+          console.log(data);
+
+          this.totalNumberBooking = data;
+          this.data4 = {
+            labels: [
+              'Pending Booking ',
+              'Approved Booking ',
+              'Rejected Booking '
+            ],
+            datasets: [{
+              data: [
+                data.Pending,
+                data.Approved,
+                data.Rejected
+              ],
+              backgroundColor: [
+                'rgb(147, 206, 201)',
+                'rgb(66, 127, 58)',
+                'rgb(177, 100, 100)'
+              ],
+              hoverOffset: 4
+            }]
+          };
+
+          this.config4 = {
+            type: 'pie',
+            data: this.data4,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }
+          };
+          this.chart4 = new Chart('MyChart4', this.config4)
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      })
+
+    }
+    else {
+      this.ServiceSrv.MyComplaintsNumber(this.userName).subscribe({
+        next: (data: any) => {
+          this.complaintCount = data;
+       
+      this.ServiceSrv.MyCompletedComplaintsNumber(this.userName).subscribe({
+        next: (data: any) => {
+          console.log(this.complaintCount);
+
+          this.data3 = {
+            labels: [
+              'UnCompleted Complaint ',
+              'Completed Complaint '
+            ],
+            datasets: [{
+              data: [
+                this.complaintCount,
+                data
+              ],
+              backgroundColor: [
+                'rgb(158, 72, 72)',
+                'rgb(109, 208, 96)'
+              ],
+              hoverOffset: 4
+            }]
+          };
+
+          this.config3 = {
+            type: 'pie',
+            data: this.data3,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }
+          };
+          this.chart3 = new Chart('MyChart3', this.config3)
+        },
+        error: (error) => {
+          console.error(error);
+        }
+      })
+       },
+        error: (error) => {
+          console.error(error);
+        }
+      })
+
+      this.ServiceSrv.MyTotalNumberBookings(this.userName).subscribe({
+        next: (data: any) =>{
+          console.log(data);
+          
+          this.totalNumberBooking = data;
+          this.data5 = {
+            labels: [
+              'Pending Booking ',
+              'Approved Booking ',
+              'Rejected Booking '
+            ],
+            datasets: [{
+              data: [
+                data.Pending,
+                data.Approved,
+                data.Rejected
+              ],
+              backgroundColor: [
+                'rgb(147, 206, 201)',
+                'rgb(66, 127, 58)',
+                'rgb(177, 100, 100)'
+              ],
+              hoverOffset: 4
+            }]
+          };
+
+          this.config5 = {
+            type: 'pie',
+            data: this.data5,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: 'bottom'
+                }
+              }
+            }
+          };
+          this.chart5 = new Chart('MyChart5', this.config5)
+        },
+        error: (error) =>{
+          console.error(error);
+        }
+      })
+    }
+
+    this.ServiceSrv.GetOneNotice(this.societyId).subscribe({
+      next: (data: any) => {
+        this.notices = data;
+        console.log(data);
       },
-      error: (error) =>{
+      error: (error) => {
         console.error(error);
       }
     })
-   }
-   else{
-    this.ServiceSrv.MyComplaintsNumber(this.userName).subscribe({
-      next: (data: any) =>{
-        this.complaintCount = data;
+
+    this.ServiceSrv.GetOneVisitors(this.societyId).subscribe({
+      next: (data: any) => {
+        this.visitors = data;
+        console.log(data);
       },
-      error: (error) =>{
+      error: (error) => {
         console.error(error);
       }
     })
-   }
 
-   this.ServiceSrv.GetOneNotice(this.societyId).subscribe({
-    next: (data: any) =>{
-      this.notices = data;
-      console.log(data);
-   },
-    error: (error) =>{
-      console.error(error);
-    }
-   })
+    console.log(this.userName);
 
-   this.ServiceSrv.GetOneVisitors(this.societyId).subscribe({
-    next: (data: any) =>{
-      this.visitors = data;
-      console.log(data);
-   },
-    error: (error) =>{
-      console.error(error);
-    }
-   })
-   console.log(this.userName);
-   
-  
+
+
+
+  }
+  ngOnInit() {
+
   }
 
 }

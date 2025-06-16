@@ -25,7 +25,7 @@ export class FlatsComponent {
   editFlatId: number = 0;
   editName: string = "";
   editFormData : any = {}
-
+editFlatUsername :string = ""
 
 
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
@@ -82,6 +82,9 @@ export class FlatsComponent {
     this.editFloorNumber = flat.floorNumber
     this.editFlatNumber = flat.flatNumber
     this.editFlatId = flat.flatsId
+    this.editFlatUsername = flat.users?.name
+    console.log(this.editFlatUsername);
+    
   }
 
   SaveEdit() {
@@ -102,6 +105,7 @@ export class FlatsComponent {
         this.fetchFlat();
         this.Getallunassignedusers();
         this.editName = "" ;
+        this.editFlatUsername = ""
         if(!res){
           this.toastr.error("Flat Number Already Exist", "error");
         }else{
