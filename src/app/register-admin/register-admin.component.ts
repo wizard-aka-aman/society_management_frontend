@@ -21,20 +21,27 @@ export class RegisterAdminComponent {
    
   formData : any ;
   fromEmail : any; 
+  SocietyId :any
   constructor(private ServiceSrv : ServiceService,private toastr: ToastrService , private router : Router ) {
 
     // const user = this.ServiceSrv.getUserName();
     // if(user!= null){
     //  this.router.navigateByUrl('/home')
     // }
- 
+     this.SocietyId = this.ServiceSrv.getSocietyId(); 
+ if(this.SocietyId ==""){
+   this.SocietyId = null;
+  }
+  console.log(this.SocietyId);
    }
   
    sendEmail(){
     this.formData = this.formvalue.value
     console.log("this.formData.email : "+this.formData.Email);  
     localStorage.setItem("email" , this.formData.Email)  
-        this.fromEmail = this.formvalue.value ;
+        this.fromEmail = this.formvalue.value ; 
+        this.fromEmail.SocietyId = this.SocietyId
+          console.log(this.fromEmail);
           
         this.ServiceSrv.registerAdmin(this.fromEmail).subscribe({
           next: (response:any) => {

@@ -19,11 +19,25 @@ export class LayoutComponent {
   profileFlatNumber: number = 0
   profileFloorNumber: number = 0
   flatProfile: any  = {};
+  societyName : string =""
+  societyId :number =0 ;
+  
   constructor(private ServiceSrv: ServiceService, private router: Router) {
     this.profileEmail = this.ServiceSrv.getEmail();
+    this.societyId = this.ServiceSrv.getSocietyId();
     this.userName = this.ServiceSrv.getUserName();
     this.Role = this.ServiceSrv.getRole();
     console.log(this.userName);
+    this.ServiceSrv.GetSocietyDetail(this.societyId).subscribe({
+      next: (data:any) =>{
+        console.log(data[0]);  
+        this.societyName = data[0].name;
+        console.log(this.societyName); 
+      },
+      error: (error: any) =>{
+        console.log(error);
+      }
+    })
     
     this.ServiceSrv.GetUserDetail(this.userName).subscribe({
       next: (data: any) => {
@@ -35,9 +49,8 @@ export class LayoutComponent {
       error: (error) => {
         console.error(error);
       }
-    })
-
-  }
+    }) 
+  } 
   SideBar() {
     const sidebar = document.getElementById('sidebar');
     sidebar?.classList.toggle('show');

@@ -34,7 +34,8 @@ export class RegisterComponent {
     console.log("this.formData.email : "+this.formData.Email);  
     localStorage.setItem("email" , this.formData.Email)  
         this.fromEmail = this.formvalue.value ;
-          
+        this.fromEmail.SocietyId = this.ServiceSrv.getSocietyId();
+          console.log(this.fromEmail);
         this.ServiceSrv.register(this.fromEmail).subscribe({
           next: (response:any) => {
             this.toastr.success("Register Successfully","Success"); 

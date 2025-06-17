@@ -3,23 +3,32 @@
   <table class="table table-bordered table-hover table-striped mt-3">
     <thead class="table-dark">
       <tr>
-        <th>Name</th> 
+        <th>Name</th>
         <th>Email</th>
-        <th>Role</th> 
-        <th>Action</th> 
+        <th>Role</th>
+        <th>Action</th>
+        @if(role=="SuperAdmin"){
+        <th>Society ID</th>
+        }
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let user of users">
-        <td>{{ user.name }}</td> 
+        <td>{{ user.name }}</td>
         <td>{{ user.email }}</td>
-        <td>{{ user.role }}</td> 
-        <td>  <button *ngIf="name!=user.name"
-              class="btn btn-sm btn-outline-primary ms-2"
-              (click)="Delete(user.name)"
-            >
-              ❌ Delete
-            </button></td> 
+        <td>{{ user.role }}</td>
+        <td>
+          <button
+            *ngIf="name != user.name"
+            class="btn btn-sm btn-outline-primary ms-2"
+            (click)="Delete(user.name)"
+          >
+            ❌ Delete
+          </button>
+        </td>
+        @if(role=="SuperAdmin"){
+        <th>{{user.societyId}}</th>
+        }
       </tr>
     </tbody>
   </table>

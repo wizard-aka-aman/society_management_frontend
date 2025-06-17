@@ -1,7 +1,11 @@
 <!-- Responsive Sidebar Wrapper --><!-- Top Navbar (toggle only on small screens) -->
 <nav class="navbar navbar-dark bg-dark d-lg-none">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Unity Circle</a>
+  <div class="container-fluid"> 
+    @if(Role == 'SuperAdmin'){
+      <a class="navbar-brand" href="#">Super Admin</a>
+    }@else{
+      <a class="navbar-brand" href="#">{{societyName}}</a>
+    }
     <button
       class="navbar-toggler"
       type="button"
@@ -21,10 +25,15 @@
   >
     <svg class="bi me-2" width="40" height="32">
       <use xlink:href="#bootstrap"></use>
-    </svg>
-    <span class="fs-4">Unity Circle</span>
+    </svg> 
+     @if(Role == 'SuperAdmin'){
+      <span class="fs-4">Super Admin</span>
+    }@else{
+       <span class="fs-4">{{societyName}}</span>
+    }
   </a>
   <hr />
+  @if(Role != 'SuperAdmin'){
   <ul class="nav nav-pills flex-column mb-auto" id="sidebarItems">
     <li>
       <a
@@ -116,7 +125,56 @@
         >Add Admin
       </a>
     </li>
+    <li *ngIf="Role == 'Admin'">
+      <a
+        routerLinkActive="active"
+        (click)="SideBar()"
+        routerLink="societysetting"
+        class="nav-link text-white"
+        >Society Setting
+      </a>
+    </li> 
   </ul>
+}@else{
+   <ul class="nav nav-pills flex-column mb-auto" id="sidebarItems">
+    <li>
+      <a
+        routerLinkActive="active"
+        (click)="SideBar()"
+        routerLink="home"
+        class="nav-link active text-white"
+        >Home</a
+      >
+    </li>
+    <li>
+      <a
+        routerLinkActive="active"
+        (click)="SideBar()"
+        routerLink="add-society"
+        class="nav-link active text-white"
+        >Add Society</a
+      >
+    </li>
+      <li>
+      <a
+        routerLinkActive="active"
+        (click)="SideBar()"
+        routerLink="registerAdmin"
+        class="nav-link text-white"
+        >Add Admin
+      </a>
+    </li>
+    <li>
+      <a
+        routerLinkActive="active"
+        (click)="SideBar()"
+        routerLink="manage-users"
+        class="nav-link text-white"
+        >Manage Users
+      </a>
+    </li>
+  </ul>
+}
   <hr />
   <div class="dropdown">
     <a
@@ -179,7 +237,8 @@
             </div>
           </div>
 
-          <div class="col-md-6">
+       @if(Role != 'SuperAdmin'){
+           <div class="col-md-6">
             <div class="card shadow-sm border-0">
               @if(flatProfile.length == 0){
               <div class="card-body">
@@ -205,6 +264,8 @@
               }
             </div>
           </div>
+       }
+       
         </div>
       </div>
       <div class="modal-footer">

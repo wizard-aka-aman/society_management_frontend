@@ -153,6 +153,33 @@ export class ServiceService {
     return this.http.post(`${this.BaseUrl}/Visitors/AddVisitors`, item);
   }
 
+  AddSociety(item:any){
+    return this.http.post(`${this.BaseUrl}/Society/AddSociety` ,item);
+  }
+  GetAllSociety(){
+    return this.http.get(`${this.BaseUrl}/Society/GetAll`);
+  }
+  UpdateSociety(id :number , item:any){
+    return this.http.put(`${this.BaseUrl}/Society/UpdateSociety/${id}`,item);
+  }
+  DeleteSociety(id :number ){
+    return this.http.delete(`${this.BaseUrl}/Society/DeleteSociety/${id}`);
+  }
+  GetUsernameWithNull(){
+    return this.http.get(`${this.BaseUrl}/GetUsernameWithNull`);
+  }
+  GetAllAdmin(){
+    return this.http.get(`${this.BaseUrl}/GetAllAdmin`);
+  }
+  GetSocietyDetail(id :number){
+    return this.http.get(`${this.BaseUrl}/GetSocietyDetail/${id}`);
+  }
+  GetAllAdminOfSociety(id :number){
+    return this.http.get(`${this.BaseUrl}/GetAllAdminOfSociety/${id}`);
+  }
+  changeSocietyName(id :number,item:any){
+    return this.http.put(`${this.BaseUrl}/Society/changeSocietyName/${id}`,item);
+  }
 
 
 

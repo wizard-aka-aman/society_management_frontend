@@ -30,6 +30,7 @@ export class HomeComponent implements OnInit {
   data3: any
   data4: any
   data5: any
+  data6: any
 
 
   config: any;
@@ -37,12 +38,14 @@ export class HomeComponent implements OnInit {
   config3: any;
   config4: any;
   config5: any;
+  config6: any;
 
   chart: any;
   chart2: any;
   chart3: any;
   chart4: any;
   chart5: any;
+  chart6: any;
 
   constructor(private ServiceSrv: ServiceService) {
     this.userName = this.ServiceSrv.getUserName();
@@ -50,7 +53,9 @@ export class HomeComponent implements OnInit {
     this.societyId = this.ServiceSrv.getSocietyId();
 
 
-    this.ServiceSrv.GetMyBills(this.userName).subscribe({
+   
+    if (this.role == "Admin") {
+       this.ServiceSrv.GetAllBills(this.societyId).subscribe({
 
       next: (data: any) => {
         this.billsdata = data;
@@ -67,7 +72,7 @@ export class HomeComponent implements OnInit {
         this.totalDues = this.unPaid + this.paid
 
 
-        this.data = {
+        this.data6 = {
           labels: [
             'Paid Amount ',
             'UnPaid Amount '
@@ -86,9 +91,9 @@ export class HomeComponent implements OnInit {
           }]
         };
 
-        this.config = {
+        this.config6 = {
           type: 'pie',
-          data: this.data,
+          data: this.data6,
           options: {
             responsive: true,
             maintainAspectRatio: false,
@@ -99,7 +104,7 @@ export class HomeComponent implements OnInit {
             }
           }
         };
-        this.chart = new Chart('MyChart', this.config)
+        this.chart6 = new Chart('MyChart6', this.config6)
 
 
       },
@@ -107,7 +112,6 @@ export class HomeComponent implements OnInit {
         console.error(error);
       }
     })
-    if (this.role == "Admin") {
       this.ServiceSrv.TotalComplaints(this.societyId).subscribe({
         next: (data: any) => {
           this.complaintCount = data;
@@ -206,6 +210,63 @@ export class HomeComponent implements OnInit {
 
     }
     else {
+       this.ServiceSrv.GetMyBills(this.userName).subscribe({
+
+      next: (data: any) => {
+        this.billsdata = data;
+        console.log(data);
+        this.billsdata.forEach(bill => {
+          if (bill.isPaid) {
+            this.paid += bill.amount;
+          } else {
+            this.unPaid += bill.amount;
+          }
+        });
+        console.log(this.paid);
+        console.log(this.unPaid);
+        this.totalDues = this.unPaid + this.paid
+
+
+        this.data = {
+          labels: [
+            'Paid Amount ',
+            'UnPaid Amount '
+          ],
+          datasets: [{
+            // data: [50, 24, 26],
+            data: [
+              this.paid,
+              this.unPaid
+            ],
+            backgroundColor: [
+              'rgb(54, 162, 235)',
+              'rgb(255, 99, 132)',
+            ],
+            hoverOffset: 4
+          }]
+        };
+
+        this.config = {
+          type: 'pie',
+          data: this.data,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        };
+        this.chart = new Chart('MyChart', this.config)
+
+
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
       this.ServiceSrv.MyComplaintsNumber(this.userName).subscribe({
         next: (data: any) => {
           this.complaintCount = data;

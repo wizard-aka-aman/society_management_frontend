@@ -7,9 +7,15 @@
       <div class="card shadow-sm stat-card   text-dark text-center">
         <div class="card-body">
           <h2>Payment</h2>
-          <div class="card-body chart-wrapper">
-            <canvas id="MyChart" ></canvas>
-          </div> 
+           @if(role =='Admin'){
+            <div class="card-body chart-wrapper">
+              <canvas id="MyChart6" ></canvas>
+            </div> 
+          }@else{
+            <div class="card-body chart-wrapper">
+              <canvas id="MyChart" ></canvas>
+            </div> 
+          } 
         </div>
       </div>
     </div>

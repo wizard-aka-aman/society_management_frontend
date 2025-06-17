@@ -1,0 +1,142 @@
+<div class="container right-side  mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>🧑🏾‍🤝‍👨🏻 Add Society</h2> 
+    <button
+      class="btn btn-primary" 
+      data-bs-toggle="modal" data-bs-target="#inputModal" 
+    >
+      ➕ Add Society
+    </button> 
+  </div>
+  <div class="list-group mt-3">
+    <a
+       
+      class="list-group-item list-group-item-action flex-column align-items-start"
+      *ngFor="let societyItem of society"
+      (click)="viewsocietyItem(societyItem)"
+    >
+      <div class="d-flex w-100 justify-content-between">
+        <h5 class="mb-1"><b>Name : </b> {{ societyItem.name }}</h5> <br>
+        <small><b>Created At : </b>{{ societyItem.createdWhen | date: 'dd MMM, yyyy' }}</small>
+      </div>
+      <p class="mb-1 text-truncate"> <b>Admin : </b>{{ societyItem.admin }}</p>
+    </a>
+    @if(society.length == 0){
+      <h3 class="text-center">No Society found</h3>
+    }
+  </div>
+</div>
+<div
+  class="modal fade show d-block"
+  *ngIf="ModalVisible"
+  tabindex="-1"
+  style="background: rgba(0, 0, 0, 0.7); z-index: 1055"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-success text-white py-3">
+        <h5 class="modal-title w-100 text-center m-0">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          View Society
+        </h5>
+      </div>
+
+      <div class="modal-body px-md-5 px-3 py-4"> 
+        <div class="mb-4"> 
+          <p><strong>Name :</strong> {{ showName }}</p>
+          <p><strong>Admin :</strong> {{ showAdmin }}</p>
+          <p><strong>created When :</strong> {{ showCreatedWhen | date: 'medium' }}</p> 
+        </div>
+      </div> 
+
+      <div class="modal-footer justify-content-center border-top-0 pb-4">
+        <button class="btn btn-outline-secondary px-4 me-2" (click)="Close()">
+          Close
+        </button> 
+        <button  class="btn btn-outline-secondary px-4 me-2" (click)="Delete()">
+          Delete
+        </button> 
+        <button  class="btn btn-outline-secondary px-4 me-2" (click)="Edit()">
+          Edit
+        </button> 
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade show d-block"
+  *ngIf="isEditAble"
+  tabindex="-1"
+  style="background: rgba(0, 0, 0, 0.7); z-index: 1055"
+>
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-success text-white py-3">
+        <h5 class="modal-title w-100 text-center m-0">
+          <i class="bi bi-exclamation-circle me-2"></i>
+          Edit Society
+        </h5>
+      </div>
+
+      <div class="modal-body px-md-5 px-3 py-4"> 
+        <div class="mb-4"> 
+          <p><strong>Name :</strong> 
+          <input type="text" style="width: 100%;" [(ngModel)]="showName" >
+        </p>
+          <p><strong>Admin :</strong>
+        
+            @if(GetUsernameWithNull.length == 0){
+              <p>All Admin assigned to Society</p> 
+            }
+            @else { 
+            <select name="" id="" [(ngModel)]="usernameForSetSocietyId">
+              <option *ngFor="let item of GetUsernameWithNull" selected [value]="item.name">{{item.name}}</option>
+            </select>
+            }
+          </p> 
+        </div>
+      </div> 
+
+      <div class="modal-footer justify-content-center border-top-0 pb-4">
+        <button class="btn btn-outline-secondary px-4 me-2" (click)="CloseEdit()">
+          Close
+        </button>  
+        <button  class="btn btn-outline-secondary px-4 me-2" (click)="SaveEdit()">
+          Save Edit
+        </button> 
+      </div>
+    </div>
+  </div>
+</div>
+
+ 
+
+<!-- Modal -->
+<div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="inputModalLabel">Enter Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="titleInput" class="form-label">Society Name</label>
+            <input type="text" id="titleInput" class="form-control" placeholder="Enter Society Name" [(ngModel)]="name" name="name" required>
+          </div> 
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" (click)="SendsocietyItem()">Save</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+

@@ -15,6 +15,8 @@ import { ManageUsersComponent } from './manage-users/manage-users.component';
 import { RegisterAdminComponent } from './register-admin/register-admin.component';
 import { SuccessComponent } from './success/success.component';
 import { CancelComponent } from './cancel/cancel.component';
+import { AddSocietyComponent } from './add-society/add-society.component';
+import { SocietySettingComponent } from './society-setting/society-setting.component';
 
 export const routes: Routes = [
     {
@@ -33,7 +35,7 @@ export const routes: Routes = [
             {
                 path: 'home',
                 component: HomeComponent,
-                canActivate : [authGuard]
+                canActivate : [authGuard], 
             },
             {
                 path: 'bills',
@@ -90,6 +92,16 @@ export const routes: Routes = [
                 path: 'cancel',
                 component: CancelComponent,
                 canActivate : [authGuard],
+            },
+            {
+                path: 'add-society',
+                component: AddSocietyComponent,
+                canActivate : [authGuard],  
+            },
+            {
+                path: 'societysetting',
+                component: SocietySettingComponent,
+                canActivate : [authGuard],  
             }
 
         ]

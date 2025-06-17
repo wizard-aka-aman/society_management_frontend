@@ -19,6 +19,14 @@
           <option value="unpaid">Unpaid</option>
         </select>
       </div>
+      <div class="col-md-3">
+        <label class="form-label">Filter: Date</label>
+        <select class="form-select" [(ngModel)]="filterBasisOnDate">
+          <option value="DueDate">Due Date</option>
+          <option value="GenerateDate">Generate Date</option>
+          <option value="PaidDate">Paid Date</option>
+        </select>
+      </div>
 
       <div *ngIf="role=='Admin'" class="col-md-3">
         <label class="form-label">Flat Number</label>
@@ -89,6 +97,10 @@
               </button>
             </div>
           </td>
+        </tr>
+        <tr>
+       <td  class="text-center   " colspan="2">Total Bill : </td>
+       <td  class="text-center"> {{totalBill}} </td>
         </tr>
       </tbody>
     </table>

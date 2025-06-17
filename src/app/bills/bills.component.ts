@@ -32,6 +32,9 @@ export class BillsComponent {
   filterBasisOnFlatNumber :any = null
 filterBasisOnStartingDate: any;
 filterBasisOnEndingDate: any;
+filterBasisOnDate:any = "DueDate"
+totalBill : number=0
+
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService , private route : Router) {
  
     
@@ -59,6 +62,7 @@ filterBasisOnEndingDate: any;
     })
   }
   filter(){ 
+    this.totalBill = 0
     console.log(this.filterBasisOnPaid);
     
     console.log(this.filterBasisOnFlatNumber);
@@ -93,11 +97,19 @@ filterBasisOnEndingDate: any;
       return e;
     }else if(this.filterBasisOnStartingDate>= this.filterBasisOnEndingDate){
       return e;
-    }else{
+    }else if(this.filterBasisOnDate == "DueDate"){
       return e.dueDate >= this.filterBasisOnStartingDate && e.dueDate <= this.filterBasisOnEndingDate;
+    }else if(this.filterBasisOnDate == "GenerateDate"){
+      return e.generatedDate >= this.filterBasisOnStartingDate && e.generatedDate <= this.filterBasisOnEndingDate;
+    }else if(this.filterBasisOnDate == "PaidDate"){
+      return e.paidDate >= this.filterBasisOnStartingDate && e.paidDate <= this.filterBasisOnEndingDate;
     }
   })
     console.log(this.bills);
+
+     this.bills.forEach((e:any)=> this.totalBill+= e.amount );
+     console.log(this.totalBill);
+     
 
     
   }
@@ -178,11 +190,14 @@ filterBasisOnEndingDate: any;
 
 
   fetchBills() {
+       this.totalBill = 0
     this.ServiceSrv.GetAllBills(this.societyId).subscribe({
       next: (res:any) => {
         console.log(res);
         this.allBills = res; // fetchedBills is the original API response
         this.bills = res
+        this.bills.forEach((e:any)=> this.totalBill+= e.amount );
+     console.log(this.totalBill);
       },
       error: (err) => {
         console.log(err);
@@ -190,6 +205,7 @@ filterBasisOnEndingDate: any;
     })
   }
   fetchMyBills() {
+       this.totalBill = 0
     console.log(this.name);
     
     this.ServiceSrv.GetMyBills(this.usernameForMyBills).subscribe({
@@ -198,6 +214,8 @@ filterBasisOnEndingDate: any;
         console.log(res);
         this.bills = res
         this.allBills = res; // fetchedBills is the original API response
+        this.bills.forEach((e:any)=> this.totalBill+= e.amount );
+     console.log(this.totalBill);
       },
       error: (err) => {
         console.log(err);
