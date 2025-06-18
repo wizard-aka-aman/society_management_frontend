@@ -24,6 +24,9 @@ export class HomeComponent implements OnInit {
   societyId: number = 0;
 
   totalNumberBooking: any = {}
+  paymentsChartDisplay : boolean = false;
+  complaintsChartDisplay : boolean = false;
+  bookingsChartDisplay : boolean = false;
 
   data: any
   data2: any
@@ -104,9 +107,15 @@ export class HomeComponent implements OnInit {
             }
           }
         };
-        this.chart6 = new Chart('MyChart6', this.config6)
-
-
+        const paymentvalue = this.data6.datasets[0].data[0]+this.data6.datasets[0].data[1];
+        if(paymentvalue == 0){
+          this.paymentsChartDisplay = false;
+        }else{
+          this.chart6 = new Chart('MyChart6', this.config6)
+          this.paymentsChartDisplay = true;
+        }
+        console.log(this.paymentsChartDisplay);
+        
       },
       error: (error) => {
         console.error(error);
@@ -149,8 +158,14 @@ export class HomeComponent implements OnInit {
               }
             }
           };
+          const paymentvalue = this.data2.datasets[0].data[0]+this.data2.datasets[0].data[1];
+          if(paymentvalue == 0){
+            this.complaintsChartDisplay = false;
+          }else{
           this.chart2 = new Chart('MyChart2', this.config2)
-
+          this.complaintsChartDisplay = true;
+        }
+          
         },
         error: (error) => {
           console.error(error);
@@ -201,7 +216,13 @@ export class HomeComponent implements OnInit {
               }
             }
           };
-          this.chart4 = new Chart('MyChart4', this.config4)
+          const paymentvalue = this.data4.datasets[0].data[0]+this.data4.datasets[0].data[1]+this.data4.datasets[0].data[2];
+          if(paymentvalue == 0){
+            this.bookingsChartDisplay = false;
+          }else{
+            this.bookingsChartDisplay = true;
+            this.chart4 = new Chart('MyChart4', this.config4)
+        }
         },
         error: (error) => {
           console.error(error);
@@ -259,8 +280,14 @@ export class HomeComponent implements OnInit {
             }
           }
         };
-        this.chart = new Chart('MyChart', this.config)
-
+        console.log(this.data.datasets[0].data[0]+this.data.datasets[0].data[1]);
+        const paymentvalue =this.data.datasets[0].data[0]+this.data.datasets[0].data[1];
+        if(paymentvalue == 0){
+          this.paymentsChartDisplay = false;
+        }else{
+          this.chart = new Chart('MyChart', this.config)
+          this.paymentsChartDisplay = true;
+        }
 
       },
       error: (error) => {
@@ -306,7 +333,13 @@ export class HomeComponent implements OnInit {
               }
             }
           };
-          this.chart3 = new Chart('MyChart3', this.config3)
+          const paymentvalue =this.data3.datasets[0].data[0]+this.data3.datasets[0].data[1];
+          if(paymentvalue == 0){
+            this.complaintsChartDisplay = false;
+          }else{
+            this.complaintsChartDisplay = true;
+            this.chart3 = new Chart('MyChart3', this.config3)
+        }
         },
         error: (error) => {
           console.error(error);
@@ -357,7 +390,13 @@ export class HomeComponent implements OnInit {
               }
             }
           };
-          this.chart5 = new Chart('MyChart5', this.config5)
+          const paymentvalue =this.data5.datasets[0].data[0]+this.data5.datasets[0].data[1]+this.data5.datasets[0].data[2];
+          if(paymentvalue == 0){
+            this.bookingsChartDisplay = false;
+          }else{
+            this.bookingsChartDisplay = true;
+            this.chart5 = new Chart('MyChart5', this.config5)
+        }
         },
         error: (error) =>{
           console.error(error);

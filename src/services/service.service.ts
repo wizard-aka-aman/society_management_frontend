@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ServiceService {
-
+    isloading = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient) {
 
   }
@@ -255,5 +256,14 @@ export class ServiceService {
       localStorage.removeItem("jwt");
       return false;
     }
+  }
+
+  show(){
+    console.log("Show");
+    this.isloading.next(true);
+  }
+  hide(){
+    console.log('hide');
+    this.isloading.next(false);
   }
 }

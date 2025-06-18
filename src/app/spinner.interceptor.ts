@@ -1,11 +1,13 @@
 import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { finalize } from 'rxjs';
+import { ServiceService } from '../services/service.service';
 
 export const spinnerInterceptor: HttpInterceptorFn = (req, next) => {
-  console.log(next);
-  console.log("hahahah");
-  
-  console.log(req);
-  
-  
-  return next(req);
+  const spinner = inject(ServiceService);
+  spinner.show(); 
+  return next(req).pipe(
+    finalize(() => spinner.hide())
+  );
 };
+ 

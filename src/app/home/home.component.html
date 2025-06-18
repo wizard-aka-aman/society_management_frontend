@@ -1,52 +1,54 @@
 <div class="container-fluid right-side px-4 py-4 home-dashboard">
-  <h2 class="fw-bold mb-4">👋 Welcome, <span class="text-primary">{{ userName }}</span></h2>
+  <h2 class="fw-bold mb-4">
+    👋 Welcome, <span class="text-primary">{{ userName }}</span>
+  </h2>
 
   <!-- Stats Cards -->
   <div class="row g-4">
     <div class="col-sm-6 col-lg-3">
-      <div class="card shadow-sm stat-card   text-dark text-center">
+      <div class="card shadow-sm stat-card text-dark text-center">
         <div class="card-body">
           <h2>Payment</h2>
-           @if(role =='Admin'){
-            <div class="card-body chart-wrapper">
-              <canvas id="MyChart6" ></canvas>
-            </div> 
-          }@else{
-            <div class="card-body chart-wrapper">
-              <canvas id="MyChart" ></canvas>
-            </div> 
-          } 
-        </div>
-      </div>
-    </div>
-    <div class="col-sm-6 col-lg-3">
-      <div class="card shadow-sm stat-card   text-dark text-center">
-        <div class="card-body">
-          <h2>Complaints</h2>
           @if(role =='Admin'){
-            <div class="card-body chart-wrapper">
-              <canvas id="MyChart2" ></canvas>
-            </div> 
-          }@else{
-            <div class="card-body chart-wrapper">
-              <canvas id="MyChart3" ></canvas>
-            </div> 
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart6"></canvas>
+          </div>
+          }@else{  
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart"> </canvas>
+          </div>
           }
         </div>
       </div>
     </div>
     <div class="col-sm-6 col-lg-3">
-      <div class="card shadow-sm stat-card   text-dark text-center">
+      <div class="card shadow-sm stat-card text-dark text-center">
+        <div class="card-body">
+          <h2>Complaints</h2>
+          @if(role =='Admin'){
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart2"></canvas>
+          </div>
+          } @else{
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart3"></canvas>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+      <div class="card shadow-sm stat-card text-dark text-center">
         <div class="card-body">
           <h2>Bookings</h2>
           @if(role == 'Admin'){
-            <div class="card-body chart-wrapper">
-          <canvas id="MyChart4" ></canvas>
-        </div>
-          }@else {
-            <div class="card-body chart-wrapper">
-          <canvas id="MyChart5" ></canvas>
-        </div>
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart4"></canvas>
+          </div>
+          } @else {
+          <div class="card-body chart-wrapper">
+            <canvas id="MyChart5"></canvas>
+          </div>
           }
         </div>
       </div>
@@ -60,7 +62,6 @@
         <div class="card-header bg-light">
           <h5 class="mb-0">📊 Bill Breakdown</h5>
         </div>
-        
       </div>
     </div>
   </div>
@@ -82,12 +83,16 @@
     <!-- Visitors -->
     <div class="col-md-6 mt-4 mt-md-0">
       <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">🚪 Recent Visitors</div>
+        <div class="card-header bg-secondary text-white">
+          🚪 Recent Visitors
+        </div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" *ngFor="let visitor of visitors">
             <strong>{{ visitor.name }}</strong> — {{ visitor.purpose }}
             <br />
-            <small class="text-muted">In: {{ visitor.visitDateTime | date : "medium" }}</small>
+            <small class="text-muted"
+              >In: {{ visitor.visitDateTime | date : "medium" }}</small
+            >
           </li>
         </ul>
       </div>
