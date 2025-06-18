@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ServiceService {
-    isloading = new BehaviorSubject<boolean>(false);
+  isloading = new BehaviorSubject<boolean>(false);
   constructor(private http: HttpClient) {
 
   }
@@ -154,34 +154,39 @@ export class ServiceService {
     return this.http.post(`${this.BaseUrl}/Visitors/AddVisitors`, item);
   }
 
-  AddSociety(item:any){
-    return this.http.post(`${this.BaseUrl}/Society/AddSociety` ,item);
+  AddSociety(item: any) {
+    return this.http.post(`${this.BaseUrl}/Society/AddSociety`, item);
   }
-  GetAllSociety(){
+  GetAllSociety() {
     return this.http.get(`${this.BaseUrl}/Society/GetAll`);
   }
-  UpdateSociety(id :number , item:any){
-    return this.http.put(`${this.BaseUrl}/Society/UpdateSociety/${id}`,item);
+  UpdateSociety(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Society/UpdateSociety/${id}`, item);
   }
-  DeleteSociety(id :number ){
+  DeleteSociety(id: number) {
     return this.http.delete(`${this.BaseUrl}/Society/DeleteSociety/${id}`);
   }
-  GetUsernameWithNull(){
+  GetUsernameWithNull() {
     return this.http.get(`${this.BaseUrl}/GetUsernameWithNull`);
   }
-  GetAllAdmin(){
+  GetAllAdmin() {
     return this.http.get(`${this.BaseUrl}/GetAllAdmin`);
   }
-  GetSocietyDetail(id :number){
+  GetSocietyDetail(id: number) {
     return this.http.get(`${this.BaseUrl}/GetSocietyDetail/${id}`);
   }
-  GetAllAdminOfSociety(id :number){
+  GetAllAdminOfSociety(id: number) {
     return this.http.get(`${this.BaseUrl}/GetAllAdminOfSociety/${id}`);
   }
-  changeSocietyName(id :number,item:any){
-    return this.http.put(`${this.BaseUrl}/Society/changeSocietyName/${id}`,item);
+  changeSocietyName(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Society/changeSocietyName/${id}`, item);
   }
-
+  VerifyPayment(id: string) {
+    return this.http.get(`${this.BaseUrl}/Payment/verify-payment?sessionId=${id}`)
+  }
+  SendEmailForBill(item: any) {
+    return this.http.post(`${this.BaseUrl}/api/Email/SendEmail`, item)
+  }
 
 
 
@@ -258,11 +263,11 @@ export class ServiceService {
     }
   }
 
-  show(){
+  show() {
     console.log("Show");
     this.isloading.next(true);
   }
-  hide(){
+  hide() {
     console.log('hide');
     this.isloading.next(false);
   }

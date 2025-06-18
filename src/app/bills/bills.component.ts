@@ -34,7 +34,7 @@ filterBasisOnStartingDate: any;
 filterBasisOnEndingDate: any;
 filterBasisOnDate:any = "DueDate"
 totalBill : number=0
-
+ todayDate :any
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService , private route : Router) {
  
     
@@ -60,6 +60,21 @@ totalBill : number=0
 
       }
     })
+   this.todayDate = this.getTodayDateAsString();
+  }
+  
+  getTodayDateAsString() {
+    let date = new Date();
+    var dd = date.getDate().toString();
+    if (date.getDate() < 10) {
+      dd = '0' + dd
+    }
+    var mm = (date.getMonth() + 1).toString();
+    if ((date.getMonth() + 1) < 10) {
+      mm = '0' + mm
+    }
+    return `${date.getFullYear()}-${mm}-${dd}`
+
   }
   filter(){ 
     this.totalBill = 0

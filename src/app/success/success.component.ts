@@ -11,24 +11,18 @@ import { ServiceService } from '../../services/service.service';
 export class SuccessComponent {
   billId: number = 0;
   constructor(private route: ActivatedRoute, private ServiceSrv: ServiceService) {
-    this.route.queryParamMap.subscribe({
-      next: (params) => {
-        console.log(params.get('billId'));
-        this.billId = Number(params.get('billId'));
-
-        if (this.billId != 0) {
-          
-          this.ServiceSrv.PayBill(this.billId).subscribe(({
-            next: (response) => {
-              console.log(response);
-            },
-            error: (error) => {
-              console.log(error);
-            }
-          }))
-
-        }
+    this.route.queryParamMap.subscribe((params) => {
+      const sessionId = params.get('session_id');
+      if (sessionId) {
+        this.ServiceSrv.VerifyPayment(sessionId).subscribe({
+          next: (res: any) => {
+            console.log("Payment verified and bill paid", res);
+          },
+          error: (err: any) => {
+            console.error("Payment verification failed", err);
+          }
+        });
       }
-    })
+    });
   }
-}
+} 
