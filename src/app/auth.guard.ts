@@ -22,7 +22,8 @@ export const authGuard: CanActivateFn = (route, state) => {
       path?.includes("manage-users") ||
       path?.includes("flats") ||
       path?.includes("register") ||
-      path?.includes("registerAdmin")
+      path?.includes("registerAdmin")||
+      path?.includes("recurring")
     )
   ) {
     routes.navigateByUrl('/home');
@@ -37,7 +38,8 @@ export const authGuard: CanActivateFn = (route, state) => {
       path?.includes("flats") ||
        path === "register" ||
       path?.includes("societysetting") ||
-      path?.includes("visitors")
+      path?.includes("visitors")||
+      path?.includes("recurring")
     )
   ) {
     routes.navigateByUrl('/home');

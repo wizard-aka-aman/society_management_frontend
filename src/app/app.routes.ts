@@ -17,6 +17,7 @@ import { SuccessComponent } from './success/success.component';
 import { CancelComponent } from './cancel/cancel.component';
 import { AddSocietyComponent } from './add-society/add-society.component';
 import { SocietySettingComponent } from './society-setting/society-setting.component';
+import { RecurringComponent } from './recurring/recurring.component';
 
 export const routes: Routes = [
     {
@@ -102,6 +103,11 @@ export const routes: Routes = [
                 path: 'societysetting',
                 component: SocietySettingComponent,
                 canActivate : [authGuard],  
+            },
+            {
+                path: 'recurring',
+                component: RecurringComponent,
+                canActivate:[authGuard]
             }
 
         ]

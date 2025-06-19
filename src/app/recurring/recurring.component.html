@@ -1,0 +1,29 @@
+<div class="container right-side mt-4">
+  <h2>Manage Users</h2>
+  <table class="table table-bordered table-hover table-striped mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Name</th>
+        <th>Recurring ID</th>
+        <th>Bill Id</th>
+        <th>Action</th> 
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rec of recurring">
+        <td>{{ rec.name }}</td>
+        <td>{{ rec.reccuringId }}</td>
+        <td>{{  rec.bills.billsId}}</td>
+        <td>
+          <button
+            
+            class="btn btn-sm btn-outline-primary ms-2"
+            (click)="Delete()"
+          >
+            ❌ Delete
+          </button>
+        </td> 
+      </tr>
+    </tbody>
+  </table>
+</div>

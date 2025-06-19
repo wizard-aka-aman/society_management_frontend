@@ -134,6 +134,15 @@
         >Society Setting
       </a>
     </li> 
+    <li *ngIf="Role == 'Admin'">
+      <a
+        routerLinkActive="active"
+        (click)="SideBar()"
+        routerLink="recurring"
+        class="nav-link text-white"
+        >Recurring
+      </a>
+    </li> 
   </ul>
 }@else{
    <ul class="nav nav-pills flex-column mb-auto" id="sidebarItems">

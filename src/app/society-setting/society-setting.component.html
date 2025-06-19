@@ -1,6 +1,5 @@
 <div class="container right-side d-flex justify-content-center mt-5">
- 
-  <div class="card shadow-lg p-4 w-100" style="max-width: 500px;">
+  <div class="card shadow-lg p-4 w-100" style="max-width: 500px">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h4 class="text-primary mb-0">
         <i class="bi bi-gear-fill me-2"></i>Society Settings
@@ -8,19 +7,39 @@
     </div>
 
     <div class="mb-3">
-      <label for="societyName" class="form-label fw-semibold">New Society Name</label>
-      <input 
-        type="text" 
-        id="societyName" 
-        class="form-control" 
-        placeholder="Enter new name" 
-        [(ngModel)]="societyChangeName">
+      <label for="societyName" class="form-label fw-semibold"
+        >New Society Name</label
+      >
+      <input
+        type="text"
+        id="societyName"
+        class="form-control"
+        placeholder="Enter new name"
+        [(ngModel)]="societyChangeName"
+      />
+      <div class="d-grid">
+        <button class="btn btn-primary" (click)="Change()">
+          <i class="bi bi-check2-circle me-2"></i>Change
+        </button>
+      </div>
     </div>
 
-    <div class="d-grid">
-      <button class="btn btn-primary" (click)="Change()">
-        <i class="bi bi-check2-circle me-2"></i>Change
-      </button>
+    <div class="mb-3">
+      <label for="societyName" class="form-label fw-semibold"
+        >Enter the number of days before the due date to notify</label
+      >
+      <input
+        type="text"
+        id="societyName"
+        class="form-control"
+        placeholder="Enter new name"
+        [(ngModel)]="societyBeforeDueDate"
+      />
+      <div class="d-grid">
+        <button class="btn btn-primary" (click)="ChangeNotify()">
+          <i class="bi bi-check2-circle me-2"></i>Change
+        </button>
+      </div>
     </div>
   </div>
 </div>

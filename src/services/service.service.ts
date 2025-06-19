@@ -181,15 +181,34 @@ export class ServiceService {
   changeSocietyName(id: number, item: any) {
     return this.http.put(`${this.BaseUrl}/Society/changeSocietyName/${id}`, item);
   }
+  changeSocietyNotifyBefore(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Society/changeSocietyNotifyBefore/${id}`, item);
+  }
   VerifyPayment(id: string) {
     return this.http.get(`${this.BaseUrl}/Payment/verify-payment?sessionId=${id}`)
   }
   SendEmailForBill(item: any) {
-    return this.http.post(`${this.BaseUrl}/api/Email/SendEmail`, item)
+    return this.http.post(`${this.BaseUrl}/api/Email/JobSendEmail`, item)
   }
-
-
-
+  changeSocietyNotify(id: number, item: any) {
+    return this.http.put(`${this.BaseUrl}/Society/changeSocietyN/${id}`, item);
+  }
+  CreateScheduleJobs(item:any){
+    return this.http.post(`${this.BaseUrl}/api/Job/CreateScheduleJob`,item);
+  } 
+  DeleteJobEmail(id :number){
+    return this.http.delete(`${this.BaseUrl}/api/Job/DeleteJobEmail/${id}`);
+  }
+  
+  CreateRecurringJob(billId:number,notifyBefore:number){
+    return this.http.get(`${this.BaseUrl}/api/Job/CreateRecurringJob/${billId}/${notifyBefore}`);
+  } 
+  StopRecurringJob(billId:number){
+    return this.http.get(`${this.BaseUrl}/api/Job/StopRecurringJob/${billId}`);
+  } 
+  GetAllRecurring(societyId:number){
+    return this.http.get(`${this.BaseUrl}/api/Job/GetAllRecurring/${societyId}`);
+  } 
 
 
 
