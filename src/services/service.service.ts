@@ -13,8 +13,8 @@ export class ServiceService {
 
   }
 
-  //  public BaseUrl :string= 'https://wizardaman.bsite.net';
-  public BaseUrl: string = 'https://localhost:7019';
+   public BaseUrl :string= 'https://wizardamansociety.bsite.net';
+  // public BaseUrl: string = 'https://localhost:7019';
 
   //api's
 
