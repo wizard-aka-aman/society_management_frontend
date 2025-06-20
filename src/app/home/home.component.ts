@@ -16,15 +16,20 @@ export class HomeComponent implements OnInit {
   totalDues: number = 0;
   unPaid: number = 0;
   paid: number = 0;
+  mytotalDues: number = 0;
+  myunPaid: number = 0;
+  mypaid: number = 0;
   complaintCount: number = 0;
   notices: any;
   visitors: any;
   billsdata: any[] = [];
+  mybillsdata: any[] = [];
   role: string = ""
   societyId: number = 0;
 
   totalNumberBooking: any = {}
   paymentsChartDisplay : boolean = false;
+  mypaymentsChartDisplay : boolean = false;
   complaintsChartDisplay : boolean = false;
   bookingsChartDisplay : boolean = false;
 
@@ -34,6 +39,7 @@ export class HomeComponent implements OnInit {
   data4: any
   data5: any
   data6: any
+  data7: any
 
 
   config: any;
@@ -42,6 +48,7 @@ export class HomeComponent implements OnInit {
   config4: any;
   config5: any;
   config6: any;
+  config7: any;
 
   chart: any;
   chart2: any;
@@ -49,6 +56,7 @@ export class HomeComponent implements OnInit {
   chart4: any;
   chart5: any;
   chart6: any;
+  chart7: any;
 
   constructor(private ServiceSrv: ServiceService) {
     this.userName = this.ServiceSrv.getUserName();
@@ -58,6 +66,71 @@ export class HomeComponent implements OnInit {
 
    
     if (this.role == "Admin") {
+      this.ServiceSrv.GetMyBills(this.userName).subscribe({
+
+      next: (data: any) => {
+        this.mybillsdata = data;
+        console.log(data);
+        this.mybillsdata.forEach(bill => {
+          if (bill.isPaid) {
+            this.mypaid += bill.amount;
+          } else {
+            this.myunPaid += bill.amount;
+          }
+        });
+        console.log(this.mypaid);
+        console.log(this.myunPaid);
+        this.mytotalDues = this.unPaid + this.mypaid
+
+
+        this.data7 = {
+          labels: [
+            'Paid Amount ',
+            'UnPaid Amount '
+          ],
+          datasets: [{
+            // data: [50, 24, 26],
+            data: [
+              this.mypaid,
+              this.myunPaid
+            ],
+            backgroundColor: [
+              'rgb(54, 162, 235)',
+              'rgb(255, 99, 132)',
+            ],
+            hoverOffset: 4
+          }]
+        };
+
+        this.config7 = {
+          type: 'pie',
+          data: this.data7,
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom'
+              }
+            }
+          }
+        };
+        const mypaymentvalue = this.data7.datasets[0].data[0]+this.data7.datasets[0].data[1];
+        if(mypaymentvalue == 0){
+          this.mypaymentsChartDisplay = false;
+        }else{
+          this.chart7 = new Chart('MyChart7', this.config7)
+          this.mypaymentsChartDisplay = true;
+        }
+        console.log(this.mypaymentsChartDisplay);
+        
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
+
+
        this.ServiceSrv.GetAllBills(this.societyId).subscribe({
 
       next: (data: any) => {

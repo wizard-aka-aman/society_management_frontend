@@ -129,7 +129,7 @@
               @if(bill.isStart != undefined){
               <button
                 *ngIf="role == 'Admin'"
-                class="btn btn-sm btn-success"
+                class="btn btn-sm btn-warning"
                 (click)="StopReccuringJob(bill)"
               >
                 Stop Recurring Job
@@ -179,12 +179,17 @@
       </div>
       <div class="modal-body">
         <div class="mb-3">
-          <label class="form-label">Flat Number</label>
-          <select class="form-select" [(ngModel)]="name">
-            <option *ngFor="let name of getAllFlats" [value]="name.users.name">
-              {{ name.flatNumber }}
-            </option>
-          </select>
+          <label class="form-label">Flat Number</label><br>
+          @if(getAllFlats.length == 0){
+            No Flat with users
+          }
+          @else{
+            <select class="form-select" [(ngModel)]="name">
+              <option *ngFor="let name of getAllFlats" [value]="name.users.name">
+                {{ name.flatNumber }}
+              </option>
+            </select>
+          }
         </div>
 
         <div class="mb-3">
@@ -285,7 +290,10 @@
           </div>
           <div class="col-md-6">
             <strong>Paid Date:</strong>
-            {{ selectedBill?.paidDate || "Not Paid" }}
+            {{ selectedBill?.paidDate |date:'medium' }}
+            @if(selectedBill?.paidDate == null){
+              Not Paid
+            }
           </div>
           <div class="col-md-6">
             <strong>Type:</strong> {{ selectedBill?.type }}
