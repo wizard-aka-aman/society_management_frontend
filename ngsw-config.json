@@ -1,4 +1,5 @@
 {
+  
   "$schema": "./node_modules/@angular/service-worker/config/schema.json",
   "index": "/index.html",
   "assetGroups": [
@@ -34,11 +35,74 @@
         "https://wizardamansociety.bsite.net/Bills/GetAllBills/1" 
       ],
       "cacheConfig": {
-        "strategy": "performance", 
+        "strategy": "freshness", 
         "maxSize": 100,
         "maxAge": "1d",
-        "timeout": "5s"
+        "timeout": "10s"
       }
+    },
+  {
+    "name": "notices-api",
+    "urls": [
+      "https://wizardamansociety.bsite.net/Notices/GetAllNotices/**"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": "1d",
+      "timeout": "10s"
     }
-  ]
+  },
+  {
+    "name": "flats-api",
+    "urls": [
+      "https://wizardamansociety.bsite.net/Flats/GetAllFlats/**"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": "1d",
+      "timeout": "10s"
+    }
+  },
+  {
+    "name": "visitors-api",
+    "urls": [
+      "https://wizardamansociety.bsite.net/Visitors/GetAllVisitors/**"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": "1d",
+      "timeout": "10s"
+    }
+  },
+  {
+    "name": "GetAllFlats-api",
+    "urls": [
+      "https://wizardamansociety.bsite.net/Flats/GetAllFlats/**"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": "1d",
+      "timeout": "10s"
+    }
+  },
+  {
+    "name": "getallusers-api",
+    "urls": [
+      "https://wizardamansociety.bsite.net/getallusers/**"
+    ],
+    "cacheConfig": {
+      "strategy": "freshness",
+      "maxSize": 100,
+      "maxAge": "1d",
+      "timeout": "10s"
+    }
+  }
+  ] 
+  
 }
+
+
