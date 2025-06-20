@@ -9,6 +9,43 @@
       ➕ Add Flats
     </button>
   </div>
+  <!-- Filter Section -->
+  <div class="card shadow-sm p-3 mb-4">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-3">
+        <label class="form-label">Block</label>
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="filterBasisOnBlock"
+          placeholder="Enter Block"
+        />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Floor Number</label>
+        <input
+          type="number"
+          class="form-control"
+          [(ngModel)]="filterBasisOnFloorNumber"
+          placeholder="Enter Floor No."
+        />
+      </div>
+      <div class="col-md-3">
+        <label class="form-label">Filter: Assigned Status</label>
+        <select class="form-select" [(ngModel)]="filterBasisOnAssigned">
+          <option value="all">All</option>
+          <option value="assigned">Assigned</option>
+          <option value="unassigned">Not Assigned</option>
+        </select>
+      </div>
+
+      <div class="col-12 text-end mt-2">
+        <button class="btn btn-outline-primary" (click)="filter()">
+          🔍 Apply Filters
+        </button>
+      </div>
+    </div>
+  </div>
 
   <div class="table-responsive">
     <table class="table table-striped">
@@ -189,23 +226,18 @@
             />
           </div>
           <div class="mb-3">
-             
-              <label for="flatNumber" class="form-label">Select User : </label>
+            <label for="flatNumber" class="form-label">Select User : </label>
             <select [(ngModel)]="editName" name="Name" id="">
               <option *ngFor="let name of allUsers" [value]="name">
                 {{ name }}
               </option>
-              <option [defaultSelected]="true" value="">
-                Not Assigned
+              <option [defaultSelected]="true" value="">Not Assigned</option>
+              @if(editFlatUsername != undefined){
+              <option [value]="editFlatUsername">
+                {{ editFlatUsername }}
               </option>
-             @if(editFlatUsername != undefined){
-               <option   [value]="editFlatUsername">
-                {{editFlatUsername}}
-              </option>
-             }
-
+              }
             </select>
-            
           </div>
         </form>
       </div>

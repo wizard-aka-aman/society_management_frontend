@@ -15,6 +15,7 @@ export class FlatsComponent {
   FloorNumber: number = 0;
   FlatNumber: number = 0;
   Flats: any[] = []
+  allFlats: any[] = []
   formData: any = {};
   societyId: number = 0;
   Name: string = "";
@@ -24,17 +25,20 @@ export class FlatsComponent {
   editFlatNumber: number = 0;
   editFlatId: number = 0;
   editName: string = "";
-  editFormData : any = {}
-editFlatUsername :string = ""
+  editFormData: any = {}
+  editFlatUsername: string = "" 
+  filterBasisOnBlock: any;
+  filterBasisOnFloorNumber: any = null
+  filterBasisOnAssigned: any = "all";
 
 
   constructor(private ServiceSrv: ServiceService, private toastr: ToastrService) {
-    this.societyId =   this.ServiceSrv.getSocietyId();
+    this.societyId = this.ServiceSrv.getSocietyId();
     this.fetchFlat();
     this.Getallunassignedusers()
-   
+
   }
-  
+
 
   saveFlat() {
     this.formData.Block = this.Block;
@@ -67,6 +71,7 @@ editFlatUsername :string = ""
     this.ServiceSrv.GetAllFlats(this.societyId).subscribe({
       next: (res: any) => {
         this.Flats = res;
+        this.allFlats = res;
         console.log(res);
 
       },
@@ -84,11 +89,11 @@ editFlatUsername :string = ""
     this.editFlatId = flat.flatsId
     this.editFlatUsername = flat.users?.name
     console.log(this.editFlatUsername);
-    
+
   }
 
   SaveEdit() {
-     this.editFormData.Block = this.editBlock;
+    this.editFormData.Block = this.editBlock;
     this.editFormData.FloorNumber = this.editFloorNumber;
     this.editFormData.FlatNumber = this.editFlatNumber;
     this.editFormData.SocietyId = this.societyId;
@@ -99,39 +104,39 @@ editFlatUsername :string = ""
       this.toastr.error('Please fill all fields and enter valid values', 'Error');
       return;
     }
-    this.ServiceSrv.UpdateFlats(this.editFlatId , this.editFormData).subscribe({
-      next: (res: any) =>{
-        console.log(res); 
+    this.ServiceSrv.UpdateFlats(this.editFlatId, this.editFormData).subscribe({
+      next: (res: any) => {
+        console.log(res);
         this.fetchFlat();
         this.Getallunassignedusers();
-        this.editName = "" ;
+        this.editName = "";
         this.editFlatUsername = ""
-        if(!res){
+        if (!res) {
           this.toastr.error("Flat Number Already Exist", "error");
-        }else{
+        } else {
           this.toastr.success("Flat updated Successfully", "Success");
         }
       },
-      error: (err: any) =>{
-         this.toastr.error  ("Flat Not Update", "Error");
+      error: (err: any) => {
+        this.toastr.error("Flat Not Update", "Error");
         console.log(err);
       }
     })
   }
-  Delete(id:number){
-     const isconfirm = confirm("You Sure Want to Delete?");
-    if(isconfirm){
+  Delete(id: number) {
+    const isconfirm = confirm("You Sure Want to Delete?");
+    if (isconfirm) {
       this.ServiceSrv.DeleteFlat(id).subscribe({
-      next: (res: any) =>{
-        console.log(res);
-        this.toastr.success("Flat deleted Successfully", "Success");
-        this.fetchFlat();
-        this.Getallunassignedusers()
-      },
-      error: (err: any) =>{
-        console.log(err);
-      }
-    })
+        next: (res: any) => {
+          console.log(res);
+          this.toastr.success("Flat deleted Successfully", "Success");
+          this.fetchFlat();
+          this.Getallunassignedusers()
+        },
+        error: (err: any) => {
+          console.log(err);
+        }
+      })
     }
   }
 
@@ -139,17 +144,55 @@ editFlatUsername :string = ""
     // Open modal or navigate to details
     console.log('Viewing complaint:', complaint);
   }
-  Getallunassignedusers(){
-     this.ServiceSrv.Getallunassignedusers(this.societyId).subscribe({
-      next: (res:any) => {
+  Getallunassignedusers() {
+    this.ServiceSrv.Getallunassignedusers(this.societyId).subscribe({
+      next: (res: any) => {
         console.log(res);
-        this.allUsers = res 
+        this.allUsers = res
         console.log(this.allUsers);
-        
+
       },
       error: (err) => {
         console.log(err);
       }
     })
+  }
+  filter() { 
+
+    console.log(this.filterBasisOnFloorNumber);
+    console.log(this.filterBasisOnBlock);
+    if(this.filterBasisOnBlock != undefined){
+      this.filterBasisOnBlock = this.filterBasisOnBlock.trim();
+    }
+
+    this.Flats = this.allFlats;
+    this.Flats = this.Flats.filter(e => {
+      if (this.filterBasisOnBlock == null || this.filterBasisOnBlock == "") {
+        return e
+      } 
+      else{
+        return e.block.toLowerCase() == this.filterBasisOnBlock.toLowerCase()
+      } 
+    })
+
+    this.Flats = this.Flats.filter(e => {
+      if (this.filterBasisOnFloorNumber == null ) {
+        return e
+      }
+      else {
+        return e.floorNumber == this.filterBasisOnFloorNumber
+      }
+
+    })
+    this.Flats = this.Flats.filter(e => {
+      if (this.filterBasisOnAssigned == "all") {
+        return e;
+      }else if (this.filterBasisOnAssigned == "assigned") {
+        return e.users != null;
+      }  else if (this.filterBasisOnAssigned == "unassigned") {
+        return e.users == null
+      } 
+    })
+    console.log(this.Flats); 
   }
 }
