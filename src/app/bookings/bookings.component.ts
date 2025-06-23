@@ -164,9 +164,11 @@ export class BookingsComponent {
     if (this.reason != null || this.reason != undefined) {
       this.reason = this.reason.trim();
     }
-    if (this.reason == "" || this.reason == null) {
-      this.toastr.error("Please Enter Reason", "error");
-      return;
+    if(this.status == "Rejected"){
+      if (this.reason == "" || this.reason == null) {
+        this.toastr.error("Please Enter Reason", "error");
+        return;
+      }
     }
     this.editFormData.Name = this.name;
     this.editFormData.endTime = this.selectedBooking.endTime;
