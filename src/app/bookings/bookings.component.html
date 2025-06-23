@@ -114,6 +114,7 @@
             <label>End Time</label>
             <input
               type="datetime-local"
+                [min]="todayDate"
               formControlName="endTime"
               class="form-control"
             />
@@ -133,6 +134,7 @@
             type="button"
             class="btn btn-secondary"
             data-bs-dismiss="modal"
+            (click)="Close()"
           >
             Close
           </button>

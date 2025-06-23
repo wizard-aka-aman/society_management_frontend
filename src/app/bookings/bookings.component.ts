@@ -42,6 +42,8 @@ export class BookingsComponent {
   getTodayDateAsString() {
     let date = new Date();
     var dd = date.getDate().toString();
+    console.log(date.toTimeString().split(':'));
+    
     if (date.getDate() < 10) {
       dd = '0' + dd
     }
@@ -49,7 +51,9 @@ export class BookingsComponent {
     if ((date.getMonth() + 1) < 10) {
       mm = '0' + mm
     }
-    return `${date.getFullYear()}-${mm}-${dd}`
+    console.log(`${date.getFullYear()}-${mm}-${dd}T${date.toTimeString().split(':')[0]}:${date.toTimeString().split(':')[1]}`);
+    
+    return `${date.getFullYear()}-${mm}-${dd}T${date.toTimeString().split(':')[0]}:${date.toTimeString().split(':')[1]}`
 
   }
 
@@ -84,6 +88,13 @@ export class BookingsComponent {
         this.FetchBookings()
       }
     })
+
+  }
+  Close(){
+     this.formData = this.bookingForm.value;
+    this.formData.Name = this.name;  
+    this.bookingForm.reset();
+    this.name = ""
 
   }
 

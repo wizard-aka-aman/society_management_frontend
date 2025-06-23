@@ -78,7 +78,8 @@ export class BillsComponent {
     })
     this.todayDate = this.getTodayDateAsString();
    
-
+    console.log(this.todayDate);
+    
 
   }
 
